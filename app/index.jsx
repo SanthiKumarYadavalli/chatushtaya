@@ -48,7 +48,7 @@ const HomeScreen = () => {
           <View className="flex-1 mt-2 w-full items-center justify-center">
             {/* Report Button (Left) */}
             <View className="absolute left-3 top-5 items-center gap-2">
-              <Link href="/bookmark" asChild>
+              <Link href="/home" asChild>
                 <TouchableOpacity className="w-32 h-32 bg-white rounded-full justify-center items-center shadow-2xl border border-[#f72c5ba6]">
                   <Image
                     source={require("../assets/images/help.jpg")} // Replace with your image
