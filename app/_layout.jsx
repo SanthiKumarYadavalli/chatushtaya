@@ -36,7 +36,7 @@ export default function RootLayout() {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="report" />
+      <Stack.Screen name="report" options={{ headerShown: false }} />
       <Stack.Screen name="history" />
       <Stack.Screen name="support" />
       <Stack.Screen name="profile" />

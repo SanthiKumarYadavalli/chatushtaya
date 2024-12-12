@@ -1,17 +1,18 @@
+import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const ChooseTypeScreen = () => {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const types = [
-    "Type 1",
-    "Type 2",
-    "Type 3",
-    "Type 4",
-    "Type 5",
-    "Type 6",
-    "Type 7",
+    "Verbal Abuse",
+    "Sexual Harassment",
+    "Bullying",
+    "Stalking",
+    "Cyber harassment",
+    "Discrimination",
+    "Abuse of Authority by Staff or Faculty"
   ];
 
   const toggleSelection = (type) => {
@@ -23,9 +24,9 @@ const ChooseTypeScreen = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white p-10 min-h-full">
-      <View className="p-5 mt-4">
-        <Text className="text-left text-3xl font-pregular">Choose a type</Text>
+    <SafeAreaView className="flex-1 bg-white p-7 min-h-full">
+      <View className="">
+        <Text className="text-left text-3xl mt-10 font-pregular">Choose a type</Text>
       </View>
 
       {/* Selectable Items */}
@@ -38,36 +39,37 @@ const ChooseTypeScreen = () => {
         }}
       >
         {types.map((type, index) => (
-          <TouchableOpacity
+          <Pressable
             key={index}
             className={`px-4 mb-3 rounded-lg  border w-full ${
               selectedTypes.includes(type)
                 ? "bg-mylavender border-transparent"
                 : "bg-white border-gray-300"
             }`}
-            style={{ paddingVertical: 15 }}
+            style={{ paddingVertical: 15, backgroundColor: "#" }}
             onPress={() => toggleSelection(type)}
           >
             <Text
-              className={`text-lg font-medium ${
+              className={`font-plight ${
                 selectedTypes.includes(type) ? "text-white" : "text-grey-600"
               }`}
             >
               {type}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         ))}
       </ScrollView>
 
       {/* Next Button */}
-      <View className="p-5">
-        <TouchableOpacity
-          className="py-4 bg-blue-600 rounded-lg"
+      <View className="">
+        <Pressable
+          className="py-4 bg-mypink rounded-xl w-full"
           onPress={() => alert(`Selected Types: ${selectedTypes.join(", ")}`)}
-        >
+        > 
           <Text className="text-center text-lg font-bold text-white">Next</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
+    <StatusBar style="auto light" />
     </SafeAreaView>
   );
 };
