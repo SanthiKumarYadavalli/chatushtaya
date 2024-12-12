@@ -33,13 +33,13 @@ const HomeScreen = () => {
         {/* Main Content */}
         <View className="flex-1 items-center justify-center mt-5">
           {/* Center Content */}
-          <View className="mt-8">
+          <View className="mt-8 h-1/2">
             <Image
               source={require("../assets/images/women.png")} // Replace with your PNG
-              className="w-64 h-96"
+              className="w-42 h-52 mt-12"
               resizeMode="contain"
             />
-            <Text className="text-5xl -mt-7 font-plight text-center">
+            <Text className="text-5xl mt-16 font-pregular text-center">
               Hello there
             </Text>
           </View>
@@ -47,12 +47,12 @@ const HomeScreen = () => {
           {/* Roadmap Section */}
           <View className="flex-1 mt-2 w-full items-center justify-center">
             {/* Report Button (Left) */}
-            <View className="absolute left-3 top-5 items-center">
-              <Link href="/report" asChild>
-                <TouchableOpacity className="w-32 h-32 bg-[#CDC1FF] rounded-full justify-center items-center shadow-lg">
+            <View className="absolute left-3 top-5 items-center gap-2">
+              <Link href="/bookmark" asChild>
+                <TouchableOpacity className="w-32 h-32 bg-white rounded-full justify-center items-center shadow-2xl border border-[#f72c5ba6]">
                   <Image
-                    source={require("../assets/images/help.png")} // Replace with your image
-                    className="w-32 h-32  rounded-full"
+                    source={require("../assets/images/help.jpg")} // Replace with your image
+                    className="w-full h-full  rounded-full"
                     resizeMode="cover"
                   />
                 </TouchableOpacity>
@@ -63,14 +63,15 @@ const HomeScreen = () => {
             </View>
 
             {/* Help Button (Right) */}
-            <View className="absolute right-3 bottom-10 items-center py-5">
-              <Link href="/help" asChild>
-                <TouchableOpacity className="w-48 h-48 bg-[#FFCCEA] rounded-full justify-center items-center shadow-lg">
+            <View className="absolute right-3 bottom-10 items-center py-5 gap-2">
+              <Link href="/report" asChild>
+                <TouchableOpacity className="w-48 h-48 bg-white rounded-full justify-center items-center shadow-2xl border border-[#1766e4]">
                   <Image
-                    source={require("../assets/images/r1.png")} // Replace with your image
-                    className="w-48 h-48  rounded-full"
-                    resizeMode="cover"
+                    source={require("../assets/images/feather.png")} // Replace with your image
+                    className=" w-full h-full rounded-full"
+                    resizeMode="contain"
                   />
+                  {/* <AntDesign name="plus" size={160} color="black" /> */}
                 </TouchableOpacity>
               </Link>
               <Text className="text-lg font-pregular text-gray-800">
