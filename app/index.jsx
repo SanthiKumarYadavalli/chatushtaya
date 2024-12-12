@@ -4,77 +4,79 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  Alert,
   Linking,
+  Pressable,
 } from "react-native";
-// import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Feather from "@expo/vector-icons/Feather";
 
 const HomeScreen = () => {
   const dialEmergency = () => {
-    // Alert.alert("Dialing Emergency", "This will dial 100.");
-    // Uncomment the following line to enable real dialing when testing on a device
     Linking.openURL("tel:100");
   };
 
   return (
     <>
-      <SafeAreaView className="flex-1 bg- items-center justify-center bg-white">
+      <SafeAreaView className="flex-1 bg-white px-4">
         <StatusBar style="black" />
+
         {/* Emergency Icon */}
         <TouchableOpacity
           onPress={dialEmergency}
-          className="absolute top-10 right-5 bg-mylavender p-10 rounded-full shadow-md"
+          className="absolute top-10 right-5 rounded-full p-3"
         >
-          <Text className="text-lg font-bold text-white">SOS</Text>
+          <Feather name="phone-call" size={38} color="#FF2929" />
         </TouchableOpacity>
 
-        {/* Center Content */}
-        <Image
-          source={require("../assets/images/women.png")} // Replace with your PNG
-          className="w-52 h-72"
-          resizeMode="cover"
-        />
-        {/* <LinearGradient
-        colors={["#CDC1FF", "#FFCCEA"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        className="p-2 rounded"
-      > */}
-        <Text className="text-2xl text-gray-800 font-plight">Hello there</Text>
-        {/* </LinearGradient> */}
-
-        {/* Row Layout */}
-        <View className="flex-row justify-between mt-10 w-3/4 gap-5">
-          {/* Report Button */}
-          <View className="flex-1 gap-3 items-center justify-center">
-            <Link href="/report" asChild>
-              <TouchableOpacity className="w-36 h-36 rounded-full justify-center items-center shadow-md">
-                <Image
-                  source={require("../assets/images/report.png")} // Replace with your image
-                  className="w-36 h-36 mb-2 rounded-full"
-                  resizeMode="cover"
-                />
-              </TouchableOpacity>
-            </Link>
-            <Text className="text-center">Report</Text>
+        {/* Main Content */}
+        <View className="flex-1 items-center justify-center mt-5">
+          {/* Center Content */}
+          <View className="mt-8">
+            <Image
+              source={require("../assets/images/women.png")} // Replace with your PNG
+              className="w-64 h-96"
+              resizeMode="contain"
+            />
+            <Text className="text-5xl -mt-7 font-plight text-center">
+              Hello there
+            </Text>
           </View>
 
-          {/* Help Button */}
-          <View className="flex-1 gap-3 items-center justify-center">
-            <Link href="/help" asChild>
-              <TouchableOpacity className="w-36 h-36 rounded-full justify-center items-center shadow-md">
-                <Image
-                  source={require("../assets/images/help.png")} // Replace with your image
-                  className="w-36 h-36 mb-2 rounded-full"
-                  resizeMode="cover"
-                />
-                {/* <Text className="text-white font-bold">Help</Text> */}
-              </TouchableOpacity>
-            </Link>
-            <Text className="text-center">Help & Support</Text>
+          {/* Roadmap Section */}
+          <View className="flex-1 mt-2 w-full items-center justify-center">
+            {/* Report Button (Left) */}
+            <View className="absolute left-3 top-5 items-center">
+              <Link href="/report" asChild>
+                <TouchableOpacity className="w-32 h-32 bg-[#CDC1FF] rounded-full justify-center items-center shadow-lg">
+                  <Image
+                    source={require("../assets/images/help.png")} // Replace with your image
+                    className="w-32 h-32  rounded-full"
+                    resizeMode="cover"
+                  />
+                </TouchableOpacity>
+              </Link>
+              <Text className="text-lg font-pregular text-gray-800">
+                Help & Support
+              </Text>
+            </View>
+
+            {/* Help Button (Right) */}
+            <View className="absolute right-3 bottom-10 items-center py-5">
+              <Link href="/help" asChild>
+                <TouchableOpacity className="w-48 h-48 bg-[#FFCCEA] rounded-full justify-center items-center shadow-lg">
+                  <Image
+                    source={require("../assets/images/r1.png")} // Replace with your image
+                    className="w-48 h-48  rounded-full"
+                    resizeMode="cover"
+                  />
+                </TouchableOpacity>
+              </Link>
+              <Text className="text-lg font-pregular text-gray-800">
+                Report
+              </Text>
+            </View>
           </View>
         </View>
       </SafeAreaView>
