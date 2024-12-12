@@ -6,7 +6,7 @@ export default function HomeScreen() {
     <View className="flex-1 bg-white items-center justify-center p-4">
       {/* App Title */}
       <Text className="text-3xl font-bold text-blue-600">Safe Campus</Text>
-      <Text className="text-lg text-gray-500 mt-2 text-center">
+      <Text className="text-lg text-secondary font-pregular  mt-2 text-center">
         Empowering students with safety and support
       </Text>
 
