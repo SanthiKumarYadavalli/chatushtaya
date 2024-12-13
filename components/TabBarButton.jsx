@@ -1,13 +1,29 @@
 import { Feather } from "@expo/vector-icons";
 import { Pressable, Text } from "react-native";
 import { useTheme } from "@react-navigation/native";
-// import { useSharedValue, withSpring } from "react-native-reanimated";
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
+import { useEffect } from "react";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import AntDesign from "@expo/vector-icons/AntDesign";
 // import { useEffect } from "react";
 
 const icons = {
-  home: (props) => <Feather name="home" size={20} color={props.color} />,
-  explore: (props) => <Feather name="compass" size={20} color={props.color} />,
-  profile: (props) => <Feather name="user" size={20} color={props.color} />,
+  contact: (props) => (
+    <AntDesign name="contacts" size={24} color={props.color} />
+  ),
+  ai: (props) => (
+    <MaterialCommunityIcons
+      name="robot-excited-outline"
+      size={28}
+      color={props.color}
+    />
+  ),
+  profile: (props) => <Feather name="user" size={24} color={props.color} />,
 };
 
 export default function TabBarButton({
@@ -19,14 +35,34 @@ export default function TabBarButton({
   label,
 }) {
   const { colors } = useTheme();
-  //   const scale = useSharedValue(0);
+  const scale = useSharedValue(0);
 
-  //   useEffect(() => {
-  //     scale.value = withSpring(
-  //       typeof isFocused === "boolean" ? (isFocused ? 1 : 0) : isFocused,
-  //       { duration: 350 }
-  //     );
-  //   }, [scale, isFocused]);
+  useEffect(() => {
+    scale.value = withSpring(
+      typeof isFocused === "boolean" ? (isFocused ? 1 : 0) : isFocused,
+      { duration: 350 }
+    );
+  }, [scale, isFocused]);
+
+  const animatedTextStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(scale.value, [0, 1], [1, 0]);
+    return {
+      opacity,
+    };
+  });
+
+  const animatedIconStyle = useAnimatedStyle(() => {
+    const scaleValue = interpolate(scale.value, [0, 1], [1.1, 1.5]);
+    const top = interpolate(scale.value, [0, 1], [0, 7]);
+    return {
+      transform: [
+        {
+          scale: scaleValue,
+        },
+      ],
+      top,
+    };
+  });
 
   return (
     <Pressable
@@ -34,10 +70,18 @@ export default function TabBarButton({
       onLongPress={onLongPress}
       className="flex-1 justify-center items-center"
     >
-      {icons[routeName]({ color: isFocused ? "red" : colors.text })}
-      <Text style={{ color }} className="font-pextralight">
+      <Animated.Text style={animatedIconStyle}>
+        {icons[routeName]({ color: isFocused ? "#f72c5b" : colors.text })}
+      </Animated.Text>
+      <Animated.Text
+        style={[
+          { color: isFocused ? "#f72c5b" : colors.text, fontSize: 12 },
+          animatedTextStyle,
+        ]}
+        className="font-pextralight"
+      >
         {label}
-      </Text>
+      </Animated.Text>
     </Pressable>
   );
 }

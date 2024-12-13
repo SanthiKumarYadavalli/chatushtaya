@@ -6,13 +6,16 @@ import TabBar from "../../components/TabBar";
 const TabLayout = () => {
   return (
     <>
-      <Tabs tabBar={(props) => <TabBar {...props} />}>
+      <Tabs tabBar={(props) => <TabBar {...props} initialRouteName="ai" />}>
         <Tabs.Screen
-          name="home"
-          options={{ title: "Home", headerShown: false }}
+          name="contact"
+          options={{ title: "Contacts", headerShown: false }}
         />
-        <Tabs.Screen name="explore" options={{ title: "Explore" }} />
-        <Tabs.Screen name="profile" options={{ title: "Profile" }} />
+        <Tabs.Screen name="ai" options={{ title: "AI", headerShown: false }} />
+        <Tabs.Screen
+          name="profile"
+          options={{ title: "Profile", headerShown: false }}
+        />
       </Tabs>
     </>
   );
