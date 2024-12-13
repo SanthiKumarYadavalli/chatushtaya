@@ -1,51 +1,142 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
-import { validateUser } from "../backend/functions"; // Adjust the import path as necessary
-import tailwind from "twrnc";
+import { useState } from "react";
+import { Link, router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { validateUser } from "../backend/functions";
 
-const Login = ({ onLoginSuccess }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  Alert,
+  Image,
+} from "react-native";
 
-    const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent the default form submission behavior
+import { icons } from "../constants";
+// import { images } from "../constants";
+// import { getCurrentUser, signIn } from "../../lib/appwrite";
+// import { useGlobalContext } from "../../context/GlobalProvider";
 
-        const response = await validateUser({ email, password });
+const SignIn = () => {
+  //   const { setUser, setIsLogged } = useGlobalContext();
+  const [isSubmitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const submit = async () => {
+    if (form.email === "" || form.password === "") {
+      Alert.alert("Error", "Please fill in all fields");
+    } else {
+        const response = await validateUser(form);
         console.log(response); // Log the response to the console
 
         if (response.success) {
-            onLoginSuccess(); // Call the function to update login status
+            setSubmitting(true);
+            Alert.alert("Success", "Successfully logged in");
+            router.replace("/home");
             
         } else {
             Alert.alert("Login Failed", response.message); // Show an alert on failure
         }
-    };
+    }
+    setSubmitting(false);
 
-    return (
-        <View style={tailwind`flex-1 justify-center p-4 bg-white`}>
-            <Text style={tailwind`text-2xl mb-6 text-center`}>Login</Text>
-            <TextInput
-                style={tailwind`border border-gray-300 h-10 mb-4 p-2`}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
+  };
+
+  return (
+    <SafeAreaView className="bg-mywhite h-full">
+      <ScrollView>
+        <View
+          className="w-full flex justify-center h-full px-4 my-6"
+          style={{
+            minHeight: Dimensions.get("window").height - 100,
+          }}
+        >
+          <Text
+            className="text-2xl font-semibold mt-10 font-psemibold"
+            style={{ color: "#FFD5C2" }}
+          >
+            Log in to Aora
+          </Text>
+
+          <View className={`space-y-2 mt-7`}>
+            <Text className="text-base font-pmedium">Email</Text>
+
+            <View className="w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary flex flex-row items-center">
+              <TextInput
+                className="flex-1 text-white font-psemibold text-base"
+                value={form.email}
+                placeholderTextColor="#CDC1FF"
+                onChangeText={(e) => setForm({ ...form, email: e })}
                 keyboardType="email-address"
-                autoCapitalize="none"
-                required
-            />
-            <TextInput
-                style={tailwind`border border-gray-300 h-10 mb-4 p-2`}
-                placeholder="Password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                required
-            />
-            <TouchableOpacity style={tailwind`bg-blue-500 p-2 rounded`} onPress={handleSubmit}>
-                <Text style={tailwind`text-white text-center`}>Login</Text>
-            </TouchableOpacity>
+              />
+            </View>
+          </View>
+          <View className={`space-y-2 mt-7`}>
+            <Text className="text-base font-pmedium">
+              Password
+            </Text>
+
+            <View className="w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary flex flex-row items-center">
+              <TextInput
+                className="flex-1 text-white font-psemibold text-base"
+                value={form.password}
+                placeholderTextColor="#CDC1FF"
+                onChangeText={(e) => setForm({ ...form, password: e })}
+                secureTextEntry={!showPassword}
+              />
+
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Image
+                  source={!showPassword ? icons.eye : icons.eyeHide}
+                  className="w-6 h-6"
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={submit}
+            activeOpacity={0.7}
+            className={`bg-secondary rounded-xl min-h-[62px] flex flex-row justify-center items-center mt-7 ${
+              isSubmitting ? "opacity-50" : ""
+            }`}
+            disabled={isSubmitting}
+          >
+            <Text className={`text-primary font-psemibold text-lg`}>
+              Sign In
+            </Text>
+
+            {isSubmitting && (
+              <ActivityIndicator
+                animating={isSubmitting}
+                color="#fff"
+                size="small"
+                className="ml-2"
+              />
+            )}
+          </TouchableOpacity>
+          <View className="flex justify-center pt-5 flex-row gap-2">
+            <Text className="text-lg text-gray-100 font-pregular">
+              Don't have an account?
+            </Text>
+            <Link
+              href="/register"
+              onPress={() => router.replace("/register")}
+              className="text-lg font-psemibold text-secondary"
+            >
+              Signup
+            </Link>
+          </View>
         </View>
-    );
+      </ScrollView>
+    </SafeAreaView>
+  );
 };
 
-export default Login;
+export default SignIn;
