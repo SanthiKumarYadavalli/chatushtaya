@@ -12,11 +12,14 @@ import { Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Feather from "@expo/vector-icons/Feather";
+import { useAuthContext } from "../context/AuthProvider";
 
 const Home = () => {
   const dialEmergency = () => {
     Linking.openURL("tel:100");
   };
+  const { user } = useAuthContext();
+  console.log("fome home", typeof user);
   return (
     <>
       <SafeAreaView className="flex-1 bg-white px-4">
@@ -41,6 +44,9 @@ const Home = () => {
             />
             <Text className="text-5xl mt-8 font-pextralight text-center">
               Hello there!
+            </Text>
+            <Text className="text-xl mt-3 font-pextralight text-center">
+              {user.email}
             </Text>
           </View>
 

@@ -20,6 +20,7 @@ export const registerUser = async (data) => {
       password
     );
     const user = userCredential.user;
+    // console.log(user);
     await AsyncStorage.setItem("user", JSON.stringify(user)); // Store user locally
     return user;
   } catch (error) {
@@ -35,7 +36,9 @@ export const loginUser = async (data) => {
       email,
       password
     );
+
     const user = userCredential.user;
+    console.log(user);
     await AsyncStorage.setItem("user", JSON.stringify(user)); // Store user locally
     return user;
   } catch (error) {
@@ -46,6 +49,7 @@ export const loginUser = async (data) => {
 export const getStoredUser = async () => {
   try {
     const user = await AsyncStorage.getItem("user");
+    console.log("getstore", user);
     return user ? JSON.parse(user) : null;
   } catch (error) {
     throw error;

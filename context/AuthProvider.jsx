@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getCurrentUser } from "../lib/appwrite";
+import { getStoredUser } from "../backend/utils";
 
 const AuthContext = createContext({
   loading: false,
@@ -19,14 +19,11 @@ export default function AuthProvider({ children }) {
   useEffect(() => {
     async function get() {
       try {
-        const result = await getCurrentUser();
-        // console.log(result);
+        const result = await getStoredUser();
+        // console.log("context: ", result);
         if (result) {
           setIsLogged(true);
           setUser(result);
-        } else {
-          setIsLogged(false);
-          setUser(null);
         }
       } catch (err) {
         console.log("from context:", err);

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
+import AuthProvider from "../context/AuthProvider";
 import "./global.css";
 
 SplashScreen.preventAutoHideAsync();
@@ -34,18 +35,20 @@ export default function RootLayout() {
     return null;
   }
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="home" options={{ headerShown: false }} />
-      <Stack.Screen name="report" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="history" />
-      <Stack.Screen name="support" />
-      <Stack.Screen name="register" options={{ headerShown: false }} />
-      <Stack.Screen name="login" options={{ headerShown: false }} />
-      <Stack.Screen name="profile" />
-      <Stack.Screen name="notify" />
-      <Stack.Screen name="landing" options={{ headerShown: false }} />
-    </Stack>
+    <AuthProvider>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="home" options={{ headerShown: false }} />
+        <Stack.Screen name="report" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="history" />
+        <Stack.Screen name="support" />
+        <Stack.Screen name="register" options={{ headerShown: false }} />
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen name="profile" />
+        <Stack.Screen name="notify" />
+        <Stack.Screen name="landing" options={{ headerShown: false }} />
+      </Stack>
+    </AuthProvider>
   );
 }
