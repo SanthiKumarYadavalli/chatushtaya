@@ -7,7 +7,7 @@ import {
   Linking,
   Pressable,
 } from "react-native";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Feather from "@expo/vector-icons/Feather";
@@ -64,7 +64,7 @@ const HomeScreen = () => {
 
             {/* Help Button (Right) */}
             <View className="absolute right-3 bottom-10 items-center py-5 gap-2">
-              <Link href="/report" asChild>
+              <Link href="/landing" onPress={() => {router.push("/landing")}}asChild>
                 <TouchableOpacity className="w-48 h-48 bg-white rounded-full justify-center items-center shadow-2xl border border-[#1766e4]">
                   <Image
                     source={require("../assets/images/feather.png")} // Replace with your image
