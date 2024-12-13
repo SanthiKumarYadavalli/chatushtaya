@@ -1,32 +1,20 @@
-// Adding the async function to validate user credentials
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth"; // Import Firebase Authentication
+
 async function validateUser(data) {
     const { email, password } = data;
 
-    // Simulating a database call to get hashed password
-    const hashedPassword = await getHashedPasswordFromDatabase(email);
-
-    // Compare the provided password with the hashed password
-    const isMatch = await comparePasswords(password, hashedPassword);
-
-    if (isMatch) {
-        return { success: true, message: "Login successful!" };
-    } else {
-        return { success: false, message: "Invalid email or password." };
+    try {
+        // Use Firebase Authentication to sign in
+        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+        
+        // If successful, return success message
+        return { success: true, message: "Login successful!", user: userCredential.user };
+    } catch (error) {
+        // Handle errors here
+        return { success: false, message: error.message };
     }
 }
 
 // Export the function
 export { validateUser };
-
-// Mock functions for database interaction and password comparison
-async function getHashedPasswordFromDatabase(email) {
-    // This function should interact with your database to get the hashed password
-    // For now, returning a mock value
-    return "hashed_password"; // Replace with actual database call
-}
-
-async function comparePasswords(password, hashedPassword) {
-    // This function should compare the plain password with the hashed one
-    // For now, returning a mock comparison
-    return password === "plain_password"; // Replace with actual hashing comparison logic
-}
