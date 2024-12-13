@@ -39,7 +39,6 @@ const SignIn = () => {
             setSubmitting(true);
             Alert.alert("Success", "Successfully logged in");
             router.replace("/home");
-            
         } else {
             Alert.alert("Login Failed", response.message); // Show an alert on failure
         }
