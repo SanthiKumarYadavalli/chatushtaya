@@ -1,12 +1,60 @@
 import { View, Platform, StyleSheet } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import TabBarButton from "./TabBarButton";
+import { useEffect, useState } from "react";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
 
 export default function TabBar({ state, descriptors, navigation }) {
   const { colors } = useTheme();
+  const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
+  const buttonWidth = dimensions.width / state.routes.length;
+  // console.log(buttonWidth);
+
+  const onTabBarLayout = (e) => {
+    const { layout } = e.nativeEvent; // Extract layout data before React nullifies it
+    if (!layout) {
+      return;
+    }
+    setDimensions((prev) => ({
+      ...prev,
+      height: layout.height,
+      width: layout.width,
+    }));
+  };
+
+  const tabX = useSharedValue(0);
+
+  useEffect(() => {
+    tabX.value = withSpring(buttonWidth * (state.index - 1), {
+      duration: 1500,
+    });
+  }, [state.index]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: tabX.value }],
+    };
+  });
 
   return (
-    <View style={styles.tabBar}>
+    <View style={styles.tabBar} onLayout={(e) => onTabBarLayout(e)}>
+      <Animated.View
+        style={[
+          {
+            position: "absolute",
+            backgroundColor: "#f72c5b",
+            borderRadius: 30,
+            marginHorizontal: 12,
+            height: dimensions.height - 15,
+            width: buttonWidth - 18,
+          },
+          animatedStyle,
+        ]}
+      />
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
@@ -44,7 +92,7 @@ export default function TabBar({ state, descriptors, navigation }) {
             onLongPress={onLongPress}
             isFocused={isFocused}
             routeName={route.name}
-            color={isFocused ? "red" : colors.text}
+            color={isFocused ? "#f72c5b" : colors.text}
             label={label}
           />
         );
@@ -56,19 +104,19 @@ export default function TabBar({ state, descriptors, navigation }) {
 const styles = StyleSheet.create({
   tabBar: {
     position: "absolute",
-    bottom: 30,
+    bottom: 20,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 70,
     backgroundColor: "#fff",
-    paddingVertical: 10,
+    paddingVertical: 15,
     borderRadius: 35,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
     shadowRadius: 10,
-    shadowOpacity: 0.1,
-    elevation: 1,
+    shadowOpacity: 1,
+    elevation: 2,
   },
   tabBarItem: {
     flex: 1,
