@@ -30,7 +30,7 @@ export default function ChatScreen() {
   };
 
   return (
-    <View className="h-[80vh] mt-10">
+    <View className="h-[90vh] mt-10">
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -46,11 +46,7 @@ export default function ChatScreen() {
                 source={require("../assets/icons/robot.png")}
                 style={styles.icon}
               />
-              <Text
-                style={{ fontSize: 24, fontWeight: "800", color: "#323232" }}
-              >
-                AI
-              </Text>
+              <Text className="text-3xl font-pmedium">Naira</Text>
             </View>
 
             {/* Content */}
@@ -69,11 +65,12 @@ export default function ChatScreen() {
             {/* Search-Bar */}
             <View style={styles.searchBar}>
               <TextInput
-                placeholder="Ask to Gemini"
+                placeholder="I'm here for you"
                 style={styles.input}
                 value={inputText}
                 onChangeText={(text) => setInputText(text)}
                 selectionColor={"#323232"}
+                className="font-plight"
               />
               <TouchableOpacity onPress={SearchInput}>
                 <AntDesign name="arrowright" size={28} color="black" />
@@ -106,11 +103,11 @@ const styles = StyleSheet.create({
   searchBar: {
     width: "100%",
     position: "absolute",
-    bottom: 0,
+    bottom: 20,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 32,
+    paddingHorizontal: 16,
     paddingVertical: 16,
     gap: 8,
     // backgroundColor: "#f9f9f9",

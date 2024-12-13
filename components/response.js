@@ -35,7 +35,9 @@ export default function Response(props) {
             source={require("../assets//icons/robot.png")}
             style={styles.icon}
           />
-          <Text style={{ fontWeight: 600 }}>Gemini</Text>
+          <Text style={{ fontWeight: 600 }} className="font-pregular">
+            Gemini
+          </Text>
         </View>
         <Text style={{ fontSize: 10, fontWeight: "600" }}>
           {date.getHours()}:{date.getMinutes()}

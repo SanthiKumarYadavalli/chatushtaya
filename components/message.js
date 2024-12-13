@@ -17,13 +17,16 @@ export default function Message(props) {
             source={require("../assets//icons/user.png")}
             style={styles.icon}
           />
-          <Text style={{ fontWeight: 500 }}>Username</Text>
+          <Text className="font-pregular">Username</Text>
         </View>
-        <Text style={{ fontSize: 10, fontWeight: 600 }}>
+        <Text style={{ fontSize: 10 }} className="font-plight">
           {date.getHours()}:{date.getMinutes()}
         </Text>
       </View>
-      <Text style={{ fontSize: 14, width: "100%", flex: 1, paddingLeft: 0 }}>
+      <Text
+        style={{ fontSize: 14, width: "100%", flex: 1, paddingLeft: 0 }}
+        className="font-plight"
+      >
         {props.message}
       </Text>
     </View>
