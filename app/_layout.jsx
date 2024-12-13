@@ -39,7 +39,10 @@ export default function RootLayout() {
       <Stack.Screen name="report" />
       <Stack.Screen name="history" />
       <Stack.Screen name="support" />
+      <Stack.Screen name="register" options={{ headerShown: false }}/>
+      <Stack.Screen name="login" options={{ headerShown: false }}/>
       <Stack.Screen name="profile" />
+      <Stack.Screen name= "notify" />
     </Stack>
   );
 }
