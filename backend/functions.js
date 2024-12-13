@@ -30,5 +30,6 @@ async function registerUser(data) {
         return { success: false, message: error.message };
     }
 }
+
 // Export the function
 export { validateUser,registerUser };
