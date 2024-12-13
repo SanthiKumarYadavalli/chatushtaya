@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { validateUser } from "../backend/functions";
 
 import {
   View,
@@ -15,6 +14,7 @@ import {
 } from "react-native";
 
 import { icons } from "../constants";
+import { loginUser } from "../backend/utils";
 // import { images } from "../constants";
 // import { getCurrentUser, signIn } from "../../lib/appwrite";
 // import { useGlobalContext } from "../../context/GlobalProvider";
@@ -29,22 +29,21 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const submit = async () => {
-    if (form.email === "" || form.password === "") {
-      Alert.alert("Error", "Please fill in all fields");
-    } else {
-        const response = await validateUser(form);
-        console.log(response); // Log the response to the console
+    try {
+      if (form.email === "" || form.password === "") {
+        Alert.alert("Error", "Please fill in all fields");
+        return;
+      }
+      const response = await loginUser(form);
 
-        if (response.success) {
-            setSubmitting(true);
-            Alert.alert("Success", "Successfully logged in");
-            router.replace("/home");
-        } else {
-            Alert.alert("Login Failed", response.message); // Show an alert on failure
-        }
+      setSubmitting(true);
+      Alert.alert("Success", "Successfully logged in");
+      router.replace("/home");
+
+      setSubmitting(false);
+    } catch (e) {
+      Alert.alert("Login Failed", e.message); // Show an alert on failure
     }
-    setSubmitting(false);
-
   };
 
   return (
@@ -77,9 +76,7 @@ const SignIn = () => {
             </View>
           </View>
           <View className={`space-y-2 mt-7`}>
-            <Text className="text-base font-pmedium">
-              Password
-            </Text>
+            <Text className="text-base font-pmedium">Password</Text>
 
             <View className="w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary flex flex-row items-center">
               <TextInput
