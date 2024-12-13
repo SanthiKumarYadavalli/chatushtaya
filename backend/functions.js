@@ -16,5 +16,19 @@ async function validateUser(data) {
     }
 }
 
+async function registerUser(data) {
+    const { email, password } = data;
+
+    try {
+        // Use Firebase Authentication to create a new user
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        
+        // If successful, return success message
+        return { success: true, message: "Registration successful!", user: userCredential.user };
+    } catch (error) {
+        // Handle errors here
+        return { success: false, message: error.message };
+    }
+}
 // Export the function
-export { validateUser };
+export { validateUser,registerUser };

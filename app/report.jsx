@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import firebase from "firebase/compat/app";
+import 'firebase/storage';
+import 'firebase/firestore';
 import {
   View,
   Text,
@@ -6,12 +9,14 @@ import {
   Pressable,
   TextInput,
   Image,
+  FlatList,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import FormScreen from "../components/FormScreen";
 import * as ImagePicker from "expo-image-picker";
 
 const ChooseTypeScreen = () => {
+  const [mediaUris, setMediaUris] = useState([]);
   const [step, setStep] = useState(0);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -23,22 +28,65 @@ const ChooseTypeScreen = () => {
     location: "",
   });
 
-  const pickImage = async () => {
+  const pickMedia = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
       allowsMultipleSelection: true,
-
+      quality:1,
     });
     if (!result.canceled) {
-      setFormData((prev) => ({ ...prev, uploadedImage: result.assets[0].uri }));
+      setMediaUris(result.assets);
     }
   };
 
+  const uploadMediaToFirebase = async (uri, mediaType, fileName) => {
+    const response = await fetch(uri); 
+    const blob = await response.blob();
 
-  const onTimeChange = (event, selectedTime) => {
-    const currentTime = selectedTime || time;
-    setShowTimePicker(false);
-    setFormData({ ...formData, time: currentTime });
+    const folder = mediaType === "image" ? "images" : "videos";
+
+    const storageRef = firebase.storage().ref().child(`${folder}/${fileName}`);
+    
+    try {
+      await storageRef.put(blob);
+      const mediaUrl = await storageRef.getDownloadURL();
+      console.log('${mediaType} URL:', mediaUrl);
+
+      addMediaDataToFirestore(mediaUrl, fileName, mediaType); // Store media metadata in Firestore
+    } catch (error) {
+      console.error('Error uploading media:', error);
+    }
+  };
+
+  // Function to store image metadata in Firestore
+  const addMediaDataToFirestore = async (mediaUrl, mediaName, mediaType) => {
+    const collectionRef = firebase.firestore().collection(mediaType);
+
+    try {
+      await collectionRef.add({
+        name: mediaName,
+        url: mediaUrl,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+      console.log('${mediaType} metadata added to Firestore');
+    } catch (error) {
+      console.error('Error adding metadata to Firestore:', error);
+    }
+  };
+
+  // Function to handle the upload process for all selected media
+  const handleUpload = () => {
+    mediaUris.forEach((media) => {
+      const { uri, type, fileName } = media; // Extract file details
+
+      // Ensure valid file name and type
+      const name = fileName || 'Unnamed';
+      const mediaType = type === 'video' ? 'video' : 'image';
+
+      // Upload each media file
+      uploadMediaToFirebase(uri, mediaType, name);
+    });
   };
 
   const onDateChange = (event, selectedDate) => {
@@ -166,8 +214,18 @@ const ChooseTypeScreen = () => {
       return (
         <FormScreen heading="Upload Evidence" disabledContidion={false} setStep={setStep}>
           <View>
+            {/* Display selected media URIs */}
+            {mediaUris.length > 0 && (
+              <FlatList
+                data={mediaUris}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                  <Text>{item.fileName || 'Unnamed file'}</Text>
+                )}
+              />
+            )}
           <TouchableOpacity
-              onPress={pickImage}
+              onPress={pickMedia}
               className="bg-gray-200 py-3 px-4 rounded-lg mb-4"
             >
               <Text className="text-blue-500">Upload Image</Text>
