@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { validateUser } from "../backend/functions";
+import { loginUser } from "../backend/utils";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Dimensions,
   Alert,
   Image,
 } from "react-native";
@@ -26,8 +25,8 @@ const SignIn = () => {
     if (form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all fields");
     } else {
-      const response = await validateUser(form);
-      if (response.success) {
+      const response = await loginUser(form);
+      if (response){
         setSubmitting(true);
         router.replace("/home");
       } else {

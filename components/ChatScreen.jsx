@@ -46,7 +46,7 @@ export default function ChatScreen() {
                 source={require("../assets/icons/robot.png")}
                 style={styles.icon}
               />
-              <Text className="text-3xl font-pmedium">Naira</Text>
+              <Text className="text-3xl font-pmedium ">Naira</Text>
             </View>
 
             {/* Content */}
@@ -60,6 +60,8 @@ export default function ChatScreen() {
                 </View>
               )}
               keyExtractor={(item, index) => index.toString()}
+              keyboardShouldPersistTaps="handled" // Allow taps on the list even when the keyboard is open
+              contentContainerStyle={{ paddingBottom: 100 }} // Add padding to the bottom
             />
 
             {/* Search-Bar */}
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
-    margin: 8,
+    margin: 20,
     gap: 8,
   },
   icon: {
@@ -103,14 +105,13 @@ const styles = StyleSheet.create({
   searchBar: {
     width: "100%",
     position: "absolute",
-    bottom: 20,
+    bottom: 0,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 16,
     gap: 8,
-    // backgroundColor: "#f9f9f9",
   },
   input: {
     flex: 1,

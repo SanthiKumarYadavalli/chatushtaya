@@ -46,7 +46,7 @@ const Home = () => {
 
           {/* Roadmap Section */}
           <View className="flex-1 mt-2 w-full items-center justify-center">
-            {/* Report Button (Left) */}
+            {/* Help Button (Left) */}
             <View className="absolute left-3 top-0 items-center gap-2">
               <Link href="/ai" asChild>
                 <TouchableOpacity className="w-32 h-32 bg-white rounded-full justify-center items-center shadow-2xl border border-[#f72c5ba6]">
@@ -62,7 +62,7 @@ const Home = () => {
               </Text>
             </View>
 
-            {/* Help Button (Right) */}
+            {/* Report Button (Right) */}
             <View className="absolute right-3 bottom-10 items-center py-5 gap-2">
               <Link href="/report" asChild>
                 <TouchableOpacity className="w-48 h-48 bg-white rounded-full justify-center items-center shadow-2xl border border-[#1766e4]">

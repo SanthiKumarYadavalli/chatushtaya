@@ -29,7 +29,7 @@ const ChooseTypeScreen = () => {
     date: new Date(),
     time: new Date(),
     location: "",
-    media:[]
+    evidenceUris:[]
   });
 
   const pickMedia = async () => {
@@ -62,7 +62,7 @@ const ChooseTypeScreen = () => {
         url:mediaUrl,
         createdAt:firebase.firestore.FieldValue.serverTimestamp()
       }
-      setFormData({...formData, media:formData.media.append(mediaObject)});
+      setFormData({...formData, evidenceUris:formData.evidenceUris.append(mediaObject)});
       
       console.log('${mediaType} metadata added to Firestore');
     } catch (error) {
