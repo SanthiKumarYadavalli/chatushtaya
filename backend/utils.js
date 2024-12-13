@@ -63,15 +63,34 @@ export const logoutUser = async () => {
 };
 
 // Function to upload a single image
-const uploadImage = async (imageUri) => {
+
+const upload = async (uri, type = "image") => {
   try {
-    const response = await fetch(imageUri);
+    const cloudinaryUrl =
+      "https://api.cloudinary.com/v1_1/dgt35afpc/image/upload";
+    const uploadPreset = "women";
+    const response = await fetch(uri);
     const blob = await response.blob();
-    const imageId = uuidv4();
-    const imageRef = ref(storage, `evidence_images/${imageId}`);
-    await uploadBytes(imageRef, blob);
-    const downloadUrl = await getDownloadURL(imageRef);
-    return downloadUrl; // Return the image URL for storing in Firestore
+
+    const formData = new FormData();
+    formData.append("file", blob);
+    formData.append("upload_preset", uploadPreset);
+    formData.append("public_id", uuidv4());
+    formData.append("resource_type", type);
+
+    const uploadResponse = await fetch(cloudinaryUrl, {
+      method: "POST",
+      body: formData,
+    });
+
+    // Parse the response
+    const result = await uploadResponse.json();
+
+    if (!uploadResponse.ok) {
+      throw new Error(result.error?.message || `Failed to upload ${type}`);
+    }
+
+    return result.secure_url;
   } catch (error) {
     console.error("Error uploading image:", error);
     throw error;
@@ -84,7 +103,8 @@ export const createReport = async ({
   date,
   time,
   location,
-  evidenceUris, // Array of local image URIs
+  imageUris,
+  videoUris, // Array of local image URIs
   anonymous,
   userId,
   status,
@@ -93,8 +113,12 @@ export const createReport = async ({
   try {
     // Upload images and get their URLs
     const evidenceUrls = [];
-    for (const uri of evidenceUris) {
-      const url = await uploadImage(uri);
+    for (const uri of imageUris) {
+      const url = await upload(uri);
+      evidenceUrls.push(url);
+    }
+    for (const uri of videoUris) {
+      const url = await upload(uri, (type = "video"));
       evidenceUrls.push(url);
     }
 
