@@ -16,7 +16,7 @@
         "foregroundImage": "./assets/images/help.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.galaxies.firebase"
+      "package": "com.anonymous.pulp"
     },
     "web": {
       "bundler": "metro",
@@ -44,6 +44,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1ee8b76e-39f5-4cc0-a38c-dc9a6c6af3f2"
+      }
     }
   }
 }
