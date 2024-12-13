@@ -19,7 +19,7 @@ const icons = {
   ai: (props) => (
     <MaterialCommunityIcons
       name="robot-excited-outline"
-      size={28}
+      size={24}
       color={props.color}
     />
   ),
@@ -52,8 +52,8 @@ export default function TabBarButton({
   });
 
   const animatedIconStyle = useAnimatedStyle(() => {
-    const scaleValue = interpolate(scale.value, [0, 1], [1.1, 1.5]);
-    const top = interpolate(scale.value, [0, 1], [0, 7]);
+    const scaleValue = interpolate(scale.value, [0, 1], [1, 1.1]);
+    const top = interpolate(scale.value, [0, 1], [0, 9]);
     return {
       transform: [
         {
@@ -71,11 +71,11 @@ export default function TabBarButton({
       className="flex-1 justify-center items-center"
     >
       <Animated.Text style={animatedIconStyle}>
-        {icons[routeName]({ color: isFocused ? "#f72c5b" : colors.text })}
+        {icons[routeName]({ color: isFocused ? "#fff" : colors.text })}
       </Animated.Text>
       <Animated.Text
         style={[
-          { color: isFocused ? "#f72c5b" : colors.text, fontSize: 12 },
+          { color: isFocused ? "#fff" : colors.text, fontSize: 12 },
           animatedTextStyle,
         ]}
         className="font-pextralight"

@@ -15,18 +15,23 @@ export default function TabBar({ state, descriptors, navigation }) {
   // console.log(buttonWidth);
 
   const onTabBarLayout = (e) => {
-    setDimensions((prev) => {
-      return {
-        ...prev,
-        height: e.nativeEvent.layout.height,
-        width: e.nativeEvent.layout.width,
-      };
-    });
+    const { layout } = e.nativeEvent; // Extract layout data before React nullifies it
+    if (!layout) {
+      return;
+    }
+    setDimensions((prev) => ({
+      ...prev,
+      height: layout.height,
+      width: layout.width,
+    }));
   };
+
   const tabX = useSharedValue(0);
 
   useEffect(() => {
-    tabX.value = withSpring(buttonWidth * state.index, { duration: 1500 });
+    tabX.value = withSpring(buttonWidth * (state.index - 1), {
+      duration: 1500,
+    });
   }, [state.index]);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -37,7 +42,7 @@ export default function TabBar({ state, descriptors, navigation }) {
 
   return (
     <View style={styles.tabBar} onLayout={(e) => onTabBarLayout(e)}>
-      {/* <Animated.View
+      <Animated.View
         style={[
           {
             position: "absolute",
@@ -46,11 +51,10 @@ export default function TabBar({ state, descriptors, navigation }) {
             marginHorizontal: 12,
             height: dimensions.height - 15,
             width: buttonWidth - 18,
-            left: -3,
           },
           animatedStyle,
         ]}
-      /> */}
+      />
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
