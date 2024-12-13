@@ -40,6 +40,7 @@ export default function RootLayout() {
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="home" options={{ headerShown: false }} />
         <Stack.Screen name="report" options={{ headerShown: false }} />
+        <Stack.Screen name="(form)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="history" />
         <Stack.Screen name="support" />

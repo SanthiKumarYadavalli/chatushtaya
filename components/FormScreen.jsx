@@ -1,21 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import FormContainer from './FormContainer'
 import FormHeader from './FormHeader'
 import NextButton from './NextButton'
+import FormContainer from './FormContainer'
+import InputsContainer from './InputsContainer'
 
-const FormScreen = ({ heading, disabledContidion, setStep, children, buttonText = "Next" }) => {
+const FormScreen = ({ heading, disabledContidion, buttonOnPress, children, buttonText = "Next" }) => {
   return (
-    <SafeAreaView className="flex-1 bg-white p-7 min-h-full">
+    <FormContainer>
         <FormHeader heading={heading} />
-        <FormContainer>
+        <InputsContainer>
             {children}
-        </FormContainer>
-        <NextButton disabledContidion={disabledContidion} setStep={setStep} text={buttonText} />
+        </InputsContainer>
+        <NextButton disabledContidion={disabledContidion} onPress={buttonOnPress} text={buttonText} />
         <StatusBar style="auto light" />
-    </SafeAreaView>
+    </FormContainer>
   )
 }
 
