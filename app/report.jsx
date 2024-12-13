@@ -10,6 +10,9 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import FormScreen from "../components/FormScreen";
 import * as ImagePicker from "expo-image-picker";
+import FormContainer from "../components/FormContainer";
+import NextButton from "../components/NextButton";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ChooseTypeScreen = () => {
   const [step, setStep] = useState(0);
@@ -165,15 +168,44 @@ const ChooseTypeScreen = () => {
     case 2:
       return (
         <FormScreen heading="Upload Evidence" disabledContidion={false} setStep={setStep}>
-          <View>
+          <View className="w-full border border-mypink rounded-2xl">
           <TouchableOpacity
               onPress={pickImage}
-              className="bg-gray-200 py-3 px-4 rounded-lg mb-4"
+              className="py-5 px-5"
             >
-              <Text className="text-blue-500">Upload Image</Text>
+              <Text className="text-center">Upload Images and Videos</Text>
             </TouchableOpacity>
           </View>
         </FormScreen>
+      );
+    case 3:
+      return (
+        <FormScreen heading="More Details (Optional)" disabledContidion={false} setStep={setStep} buttonText="Submit">
+          <View className="mb-4 w-full">
+          <TextInput
+              className="px-6 py-4 mb-3 rounded-lg text-lg text-pregular bg-white border border-gray-300 text-gray-800"
+              placeholder="Enter Harasser's Details"
+              multiline
+              numberOfLines={10}
+            />
+            <TextInput
+              className="px-6 py-4 mb-3 rounded-lg text-lg text-pregular bg-white border border-gray-300 text-gray-800"
+              placeholder="Enter Additional Information"
+              multiline
+              numberOfLines={10}
+            />
+          </View>
+        </FormScreen>
+      );
+    case 4:
+      return (
+        <SafeAreaView className="flex-1 bg-white p-7 min-h-full">
+          <FormContainer>
+            <Image source={require("../assets/images/submitted.png")} resizeMode="contain" className="w-52 h-52" />
+            <Text className="text-center text-2xl font-pbold mt-5">We have received your submission!</Text>
+          </FormContainer>
+          <NextButton disabledContidion={false} homeButton={true} text="Go Home" />
+        </SafeAreaView>
       );
   }
 };

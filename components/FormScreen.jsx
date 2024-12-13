@@ -6,14 +6,14 @@ import FormContainer from './FormContainer'
 import FormHeader from './FormHeader'
 import NextButton from './NextButton'
 
-const FormScreen = ({ heading, disabledContidion, setStep, children }) => {
+const FormScreen = ({ heading, disabledContidion, setStep, children, buttonText = "Next" }) => {
   return (
     <SafeAreaView className="flex-1 bg-white p-7 min-h-full">
         <FormHeader heading={heading} />
         <FormContainer>
             {children}
         </FormContainer>
-        <NextButton disabledContidion={disabledContidion} setStep={setStep} />
+        <NextButton disabledContidion={disabledContidion} setStep={setStep} text={buttonText} />
         <StatusBar style="auto light" />
     </SafeAreaView>
   )
