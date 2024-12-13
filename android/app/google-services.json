@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "818680022816",
+    "project_id": "chatushtaya-b4512",
+    "storage_bucket": "chatushtaya-b4512.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818680022816:android:f0651bb143e8f702993945",
+        "android_client_info": {
+          "package_name": "com.chatushtaya"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8jVYTFaAGFe0aXJwdjBOq1gri-5tJ68s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

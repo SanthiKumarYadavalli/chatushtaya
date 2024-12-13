@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { validateUser } from "../backend/functions";
+
 import {
   View,
   Text,
@@ -30,23 +32,19 @@ const SignIn = () => {
     if (form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all fields");
     } else {
-      setSubmitting(true);
-      Alert.alert("Success", "Successfully logged in");
-      router.replace("/home");
+        const response = await validateUser(form);
+        console.log(response); // Log the response to the console
+
+        if (response.success) {
+            setSubmitting(true);
+            Alert.alert("Success", "Successfully logged in");
+            router.replace("/home");
+        } else {
+            Alert.alert("Login Failed", response.message); // Show an alert on failure
+        }
     }
     setSubmitting(false);
 
-    // try {
-    //   await signIn(form.email, form.password);
-    //   const result = await getCurrentUser();
-    //   setUser(result);
-    //   setIsLogged(true);
-
-    //   Alert.alert("Success", "User signed in successfully");
-    // } catch (error) {
-    //   Alert.alert("Error", error.message);
-    // } finally {
-    // }
   };
 
   return (
