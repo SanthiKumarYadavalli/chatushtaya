@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from "uuid"; // Install: npm install uuid
 import { firestore, storage } from "./firebase";
 
 const auth = getAuth();
-
 export const registerUser = async (data) => {
   const {email, password} = data;
   try {
@@ -65,6 +64,7 @@ export const logoutUser = async () => {
 
 // Function to upload a single image
 import * as FileSystem from "expo-file-system";
+import { useAuthContext } from "../context/AuthProvider";
 
 const upload = async (uri, type) => {
   try {
@@ -117,6 +117,7 @@ export const createReport = async (data) => {
       ...data,
       evidence: evidenceUrls,
       status: "unreviewed",
+      userId:useAuthContext().id,
     };
 
     console.log("Report Data:", data);
@@ -132,10 +133,10 @@ export const createReport = async (data) => {
 };
 
 
-const fetchReportsByUserId = async (userId) => {
+const fetchReportsById = async (id) => {
   try {
     const reportsRef = collection(firestore, "reports");
-    const q = query(reportsRef, where("userId", "==", userId));
+    const q = query(reportsRef, where("userId", "==", id));
     const querySnapshot = await getDocs(q);
 
     const reports = [];
