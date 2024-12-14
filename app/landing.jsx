@@ -1,100 +1,90 @@
-import { StatusBar } from "expo-status-bar";
-import { Redirect, router } from "expo-router";
-import {
-  View,
-  Image,
-  ScrollView,
-  ActivityIndicator,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-
 import { images } from "../constants";
-// import { useGlobalContext } from "../context/GlobalProvider";
 
-const Welcome = () => {
-  //   const { loading, isLogged } = useGlobalContext();
-  const loading = false;
-  const isLogged = false;
-
-  if (!loading && isLogged) return <Redirect href="/home" />;
-
+import React from "react";
+import { View, Text, StyleSheet, Button, ImageBackground ,TouchableOpacity} from "react-native";
+import Swiper from "react-native-swiper";
+import { router } from "expo-router";
+// import {index1} from "../constants/images"
+export default function Landing() {
   return (
-    <SafeAreaView className=" h-full" style = {{ backgroundColor: "#6892D5" }}>
-      <View
-        className="absolute flex justify-center items-center w-full h-full bg-primary/60 z-10"
-        style={{
-          height: 10000,
-        }}
-      >
-        <ActivityIndicator
-          animating={loading}
-          color="#fff"
-          size={ 50}
-        />
+    <Swiper
+      loop={false}
+      showsPagination={true}
+      dotStyle={styles.dot}
+      activeDotStyle={styles.activeDot}
+    >
+      <View style={styles.slide}>
+        <ImageBackground
+          source={require("../assets/images/index1.png")}
+          className="w-full h-full"
+          resizeMode="contain"
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        ></ImageBackground>
       </View>
-      <ScrollView
-        contentContainerStyle={{
-          height: "100%",
-        }}
-      >
-        <View className="w-full flex justify-center items-center h-full px-4">
-          <Image
-            source={images.logo}
-            className="w-[130px] h-[84px]"
-            resizeMode="contain"
-          />
-
-          <Image
-            source={images.feather}
-            className="max-w-[380px] w-full h-[298px]"
-            resizeMode="contain"
-          />
-
-          <View className="relative mt-5">
-            <Text className="text-3xl text-white font-bold text-center">
-              Discover Endless{"\n"}
-              Possibilities with{" "}
-              <Text className="text-secondary-200">Aora</Text>
-            </Text>
-
-            <Image
-              source={images.logo}
-              className="w-[136px] h-[15px] absolute -bottom-2 -right-8"
-              resizeMode="contain"
-            />
-          </View>
-
-          <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
-            Where Creativity Meets Innovation: Embark on a Journey of Limitless
-            Exploration with Aora
-          </Text>
-
-          <TouchableOpacity
-            onPress={() => router.push("/login")}
-            className={`bg-secondary rounded-xl min-h-[62px] flex flex-row justify-center items-center w-full mt-7 bg-mypink}`}
-          >
-            <Text
-              className={`text-primary font-psemibold text-lg opacity-100`}
-              onPress={() => router.push("/login")}
-            >
-              Continue with Email
-            </Text>
-
-            <ActivityIndicator
-              animating={true}
-              color="#fff"
-              size="small"
-              className="ml-2"
-            />
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-
-      <StatusBar backgroundColor="#79D1C3" style="light" />
-    </SafeAreaView>
+      <View style={styles.slide}>
+        <ImageBackground
+          source={require("../assets/images/index3.png")}
+          className="w-full h-full"
+          resizeMode="cover"
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        ></ImageBackground>
+      </View>
+      <View style={styles.slide}>
+        <ImageBackground
+          source={require("../assets/images/index2.png")}
+          className="w-full h-full"
+          resizeMode="contain"
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View className="absolute bottom-20 w-full flex items-center">
+    <TouchableOpacity
+      className="bg-white border-2 border-black text-black flex items-center justify-center w-[200px] h-[50px] rounded-xl"
+      onPress={() => router.push("login")}
+    >
+      <Text className="text-black text-3xl font-medium">
+        Get started →
+      </Text>
+    </TouchableOpacity>
+  </View>
+        </ImageBackground>
+      </View>
+    </Swiper>
   );
-};
+}
 
-export default Welcome;
+const styles = StyleSheet.create({
+  slide: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    color: "#fff",
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  dot: {
+    backgroundColor: "#fff",
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  activeDot: {
+    backgroundColor: "#860afd",
+    width: 10,
+    height: 20,
+    borderRadius: 5,
+  },
+});
