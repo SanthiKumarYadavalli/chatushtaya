@@ -53,8 +53,9 @@ export default function RootLayout() {
         <Stack.Screen name="register" options={{ headerShown: false }} />
         <Stack.Screen name="login" options={{ headerShown: false }} />
         <Stack.Screen name="profile" options={{ headerShown: false }} />
-        <Stack.Screen name="notify" options={{ headerShown: false }}/>
+        <Stack.Screen name="notify" options={{ headerShown: false }} />
         <Stack.Screen name="landing" options={{ headerShown: false }} />
+        <Stack.Screen name="report/[id]" options={{ headerShown: false }} />
       </Stack>
     </AuthProvider>
   );

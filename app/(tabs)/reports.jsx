@@ -9,6 +9,7 @@ import {
 import { fetchReportsByUserId } from "../../backend/utils"; // Adjust the path as necessary
 import { useAuthContext } from "../../context/AuthProvider";
 import LoadingScreen from "../(form)/loading";
+import { router } from "expo-router";
 
 export default function ReportsScreen() {
   const [reports, setReports] = useState([]);
@@ -56,7 +57,9 @@ export default function ReportsScreen() {
 
   // If no report is selected, show the list of reports
   if (!selectedReport) {
-    const sortedReports = reports.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedReports = reports.sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
 
     return (
       <SafeAreaView className="h-full">
@@ -73,7 +76,7 @@ export default function ReportsScreen() {
               sortedReports.map((item, index) => (
                 <TouchableOpacity
                   key={index}
-                  onPress={() => setSelectedReport(item)} // When clicked, set the selected report
+                  onPress={() => router.push(`/report/${item.id}`)} // When clicked, set the selected report
                   className="flex"
                 >
                   <View className="bg-white p-4 rounded-lg mb-4 shadow-lg border border-gray-300">
@@ -86,7 +89,7 @@ export default function ReportsScreen() {
                     <Text className="text-sm text-gray-600 mt-1">
                       {`Location: ${item.location}`}
                     </Text>
-                    <Text className="text-sm text-gray-600 mt-1 text-gray-400">
+                    <Text className="text-sm  mt-1 text-gray-400">
                       {`Status: ${item.status}`}
                     </Text>
                   </View>

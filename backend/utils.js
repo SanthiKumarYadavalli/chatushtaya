@@ -4,11 +4,20 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage"; // React Native local storage
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid"; // Install: npm install uuid
 import { firestore, storage } from "./firebase";
 import * as FileSystem from "expo-file-system";
-// import { useAuthContext } from "../context/AuthProvider";
+
+// import { sendWelcomeEmail, sendReportSubmissionEmail } from "./mail";
 
 // const {user} = useAuthContext();
 const auth = getAuth();
@@ -143,7 +152,8 @@ export const createReport = async (data) => {
     await addDoc(reportsCollection, reportData);
 
     console.log("Report created successfully!");
-    console.log(await fetchAllReports());
+    // console.log(await fetchAllReports());
+    // await sendReportSubmissionEmail(data.email, data.username);
   } catch (error) {
     console.error("Error creating report:", error);
     throw error;
@@ -255,6 +265,7 @@ export const registerMember = async (data) => {
     const user = await registerUser(data);
     const membersCollection = collection(firestore, "members");
     await addDoc(membersCollection, { ...data, id: user.uid });
+    // await sendWelcomeEmail(data.email, data.username);
     console.log("Member added successfully!", user);
   } catch (error) {
     // console.error("Error adding member:", error);
@@ -340,6 +351,29 @@ export const fetchContacts = async () => {
     return contactsList;
   } catch (error) {
     console.error("Error fetching contacts:", error);
+    throw error;
+  }
+};
+
+export const fetchSingleReport = async (docId) => {
+  console.log("Fetching report with Document ID:", docId);
+  try {
+    // Reference the specific document by its auto-generated ID
+    const reportRef = doc(firestore, "reports", docId);
+
+    // Fetch the document
+    const reportDoc = await getDoc(reportRef);
+
+    if (reportDoc.exists()) {
+      console.log("Report fetched:", reportDoc.data());
+      // Combine document ID with its data
+      return { id: reportDoc.id, ...reportDoc.data() };
+    } else {
+      console.warn("No report found with the given Document ID");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching single report:", error);
     throw error;
   }
 };
