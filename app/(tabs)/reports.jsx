@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { fetchReportsByUserId } from "../../backend/utils"; // Adjust the path as necessary
 import { useAuthContext } from "../../context/AuthProvider";
-import { router } from "expo-router";
+import LoadingScreen from "../(form)/loading";
 
 export default function ReportsScreen() {
   const [reports, setReports] = useState([]);
@@ -34,11 +34,7 @@ export default function ReportsScreen() {
   }, [user]);
 
   if (loading) {
-    return (
-      <View>
-        <Text className="flex-1 text-align">Loading Reports...</Text>
-      </View>
-    );
+    return <LoadingScreen />;
   }
 
   if (error) {

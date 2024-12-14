@@ -3,7 +3,7 @@ import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { loginUser } from "../backend/utils";
 import { Toast } from "toastify-react-native";
-
+import LoadingScreen from "./(form)/loading";
 import {
   View,
   Text,
@@ -18,6 +18,7 @@ import { icons } from "../constants";
 import { useAuthContext } from "../context/AuthProvider";
 const SignIn = () => {
   const { setUser, setIsLogged } = useAuthContext();
+  const [loading, setLoading] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -25,7 +26,12 @@ const SignIn = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
 
+  if(loading){
+    return <LoadingScreen />
+  }
+
   const submit = async () => {
+    setLoading(true);
     try {
       if (form.email === "" || form.password === "") {
         Alert.alert("Error", "Please fill in all fields");
@@ -37,10 +43,11 @@ const SignIn = () => {
       setSubmitting(true);
       Toast.success("Successfully logged in");
       router.replace("/home");
-
       setSubmitting(false);
     } catch (e) {
       Toast.error("Error logging in", e.message);
+    }finally{
+      setLoading(false);
     }
   };
 

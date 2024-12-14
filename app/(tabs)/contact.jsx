@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from "react";
+import LoadingScreen from "../(form)/loading";
 import {
   View,
   Text,
@@ -11,12 +12,14 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { fetchContacts } from "../../backend/utils";
 
 export default function contact() {
+  const [loading, setLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
   useEffect(() => {
     fetchContacts().then((data) => {
       setContacts(data);
+      setLoading(false);
     });
-  }, [1000]);
+  }, []);
 
   const handleLinkPress = (type, value) => {
     switch (type) {
@@ -33,6 +36,9 @@ export default function contact() {
         break;
     }
   };
+  if(loading){
+    return <LoadingScreen />
+  }
 
   return (
     <SafeAreaView className="h-full">

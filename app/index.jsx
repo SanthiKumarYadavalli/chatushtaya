@@ -11,7 +11,7 @@ const App = () => {
     return <Redirect href={"home"} />;
   }
 
-  return <Login />;
+  return <Landing />;
 };
 
 export default App;

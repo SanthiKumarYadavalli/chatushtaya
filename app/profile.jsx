@@ -79,11 +79,11 @@ export default function profile() {
               Reported Incidents
             </Text>
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => {router.replace("reports")}}
               className="bg-white p-4 rounded-lg shadow-md font-pregular mb-4"
             >
               <Text className="text-gray-700 text-center">
-                View all {user.reportedIncidents} reports
+                View all {reportCnt.reportedIncidents} reports
               </Text>
             </TouchableOpacity>
           </View>
