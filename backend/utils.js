@@ -152,8 +152,7 @@ export const createReport = async (data) => {
     await addDoc(reportsCollection, reportData);
 
     console.log("Report created successfully!");
-    // console.log(await fetchAllReports());
-    // await sendReportSubmissionEmail(data.email, data.username);
+    console.log(await fetchAllReports());
   } catch (error) {
     console.error("Error creating report:", error);
     throw error;
@@ -265,7 +264,6 @@ export const registerMember = async (data) => {
     const user = await registerUser(data);
     const membersCollection = collection(firestore, "members");
     await addDoc(membersCollection, { ...data, id: user.uid });
-    // await sendWelcomeEmail(data.email, data.username);
     console.log("Member added successfully!", user);
   } catch (error) {
     // console.error("Error adding member:", error);
