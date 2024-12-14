@@ -32,17 +32,15 @@ const SignIn = () => {
         return;
       }
       const response = await loginUser(form);
-      // console.log("login response", response);
       setUser(response);
       setIsLogged(true);
       setSubmitting(true);
-      // Alert.alert("Success", "Successfully logged in");
       Toast.success("Successfully logged in");
       router.replace("/home");
 
       setSubmitting(false);
     } catch (e) {
-      Alert.alert("Login Failed", e.message); // Show an alert on failure
+      Toast.error("Error logging in", e.message);
     }
   };
 

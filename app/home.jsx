@@ -57,7 +57,7 @@ const Home = () => {
               Hello there!
             </Text>
             <Text className="text-xl mt-3 font-pextralight text-center">
-              {user.email}
+              {user.username}
             </Text>
           </View>
 
