@@ -8,7 +8,7 @@ export const ReportProvider = ({ children }) => {
         date: new Date(),
         time: new Date(),
         location: "",
-        evidence: [],
+        evidence: {assets: []},
         isAnonymous: false,
     });
 

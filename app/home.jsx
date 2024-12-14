@@ -17,7 +17,8 @@ import Login from "./login";
 import { Toast } from "toastify-react-native";
 const Home = () => {
   const dialEmergency = () => {
-    Linking.openURL("tel:100");
+    // Linking.openURL("tel:100");
+    router.push("notify");
   };
   const { user } = useAuthContext();
   if (!user) {
