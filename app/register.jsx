@@ -4,8 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native";
 import { icons } from "../constants";
-
-import { registerUser } from "../backend/functions";
+import { Toast } from "toastify-react-native";
+import { registerMember } from "../backend/utils";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,39 +13,34 @@ const SignUp = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
+    username: "",
   });
 
   const submit = async () => {
-    if (form.email === "" || form.password === "") {
-      Alert.alert("Error", "Please fill in all fields");
-    } else {
+    try {
       setSubmitting(true);
-      const response = await registerUser(form);
-      if (!response.success) {
-        Alert.alert("Sign Up Failed", response.message);
-        return;
-      }
-      router.replace("/home");
+      const response = await registerMember(form);
+
+      Toast.success("Sign Up successful!");
+
+      setSubmitting(false);
+      router.replace("/login");
+    } catch (error) {
+      Toast.error(error.message);
+      console.log(error);
     }
-    setSubmitting(false);
   };
 
   return (
     <SafeAreaView className="flex-1 bg-white px-4">
-      <View className="flex items-center">
-            <Image
-                source={require("../assets/images/register.png")} // Image for login
-                className="w-42 h-52 mt-8 mb-5"
-                resizeMode="contain"
-            />
-        </View>
-
-      <View className="flex-1 mt-5">
+      <View className="flex-1 mt-5 px-4">
         <View className="flex justify-center h-full">
-          <Text className="text-2xl font-semibold text-center text-gray-800">Sign Up to Chatushtaya</Text>
+          <Text className="text-2xl font-semibold text-center text-gray-800">
+            Sign Up to Chatushtaya
+          </Text>
 
           <View className={`space-y-2 mt-7`}>
-            <Text className="text-base font-medium">Email</Text>
+            <Text className="text-base mb-3 font-medium">Email</Text>
             <TextInput
               className="border border-gray-300 h-12 px-4 rounded-2xl"
               value={form.email}
@@ -55,9 +50,21 @@ const SignUp = () => {
               keyboardType="email-address"
             />
           </View>
+          <View className={`space-y-2 mt-7`}>
+            <Text className="text-base mb-3 font-medium">Username</Text>
+            <View className="flex flex-row items-center border border-gray-300 h-12 px-4 rounded-2xl">
+              <TextInput
+                className="flex-1 text-base"
+                value={form.username}
+                placeholder="Enter your username"
+                placeholderTextColor="#A9A9A9"
+                onChangeText={(e) => setForm({ ...form, username: e })}
+              />
+            </View>
+          </View>
 
           <View className={`space-y-2 mt-7`}>
-            <Text className="text-base font-medium">Password</Text>
+            <Text className="text-base mb-3 font-medium">Password</Text>
             <View className="flex flex-row items-center border border-gray-300 h-12 px-4 rounded-2xl">
               <TextInput
                 className="flex-1 text-base"
@@ -80,7 +87,7 @@ const SignUp = () => {
           <TouchableOpacity
             onPress={submit}
             activeOpacity={0.7}
-            className={`bg-blue-500 rounded-xl min-h-[62px] flex flex-row justify-center items-center mt-7 ${
+            className={`bg-[#1766e4] rounded-xl min-h-[62px] flex flex-row justify-center items-center mt-7 ${
               isSubmitting ? "opacity-50" : ""
             }`}
             disabled={isSubmitting}
@@ -89,8 +96,14 @@ const SignUp = () => {
           </TouchableOpacity>
 
           <View className="flex justify-center pt-5 flex-row gap-2">
-            <Text className="text-lg text-gray-600">Already have an account?</Text>
-            <Link href="login" onpress={() => router.replace("/login")} className="text-lg font-semibold text-blue-500">
+            <Text className="text-lg text-gray-600">
+              Already have an account?
+            </Text>
+            <Link
+              href="login"
+              onpress={() => router.replace("/login")}
+              className="text-lg font-semibold text-blue-500"
+            >
               Login
             </Link>
           </View>

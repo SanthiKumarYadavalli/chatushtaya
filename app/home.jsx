@@ -1,5 +1,3 @@
-import React, { useEffect } from "react";
-import firebase from "firebase/compat/app";
 import {
   View,
   Text,
@@ -7,6 +5,7 @@ import {
   Image,
   Linking,
   Pressable,
+  Button,
 } from "react-native";
 import { Link, Redirect, router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -15,8 +14,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { useAuthContext } from "../context/AuthProvider";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Login from "./login";
-import Notify from "./notify";
-
+import { Toast } from "toastify-react-native";
 const Home = () => {
   const dialEmergency = () => {
     // Linking.openURL("tel:100");
@@ -60,7 +58,7 @@ const Home = () => {
               Hello there!
             </Text>
             <Text className="text-xl mt-3 font-pextralight text-center">
-              {user.email}
+              {user.username}
             </Text>
           </View>
 
