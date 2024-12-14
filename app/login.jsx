@@ -47,7 +47,7 @@ const SignIn = () => {
   };
 
   return (
-    <SafeAreaView className="bg-mywhite h-full">
+    <SafeAreaView className="bg-background h-full">
       <ScrollView>
         <View
           className="w-full flex justify-center h-full px-4 my-6"
@@ -57,15 +57,15 @@ const SignIn = () => {
         >
           <Text
             className="text-2xl font-semibold mt-10 font-psemibold"
-            style={{ color: "#FFD5C2" }}
+            style={{ color: "#860afd" }}
           >
-            Log in to Aora
+            Log in to Krish
           </Text>
 
           <View className={`space-y-2 mt-7`}>
             <Text className="text-base font-pmedium">Email</Text>
 
-            <View className="w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary flex flex-row items-center">
+            <View className="w-[300px] h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary flex flex-row items-center">
               <TextInput
                 className="flex-1 text-white font-psemibold text-base"
                 value={form.email}

@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       colors: {
         mywhite: "#FFF6E3",
+        background : "#f0f2f6",
         mylavender: "#6892D5",
         mypink: "#79D1C3",
         black: {
