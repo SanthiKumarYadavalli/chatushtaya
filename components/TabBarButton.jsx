@@ -12,20 +12,6 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 // import { useEffect } from "react";
 
-const icons = {
-  contact: (props) => (
-    <AntDesign name="contacts" size={24} color={props.color} />
-  ),
-  ai: (props) => (
-    <MaterialCommunityIcons
-      name="robot-excited-outline"
-      size={24}
-      color={props.color}
-    />
-  ),
-  profile: (props) => <Feather name="user" size={24} color={props.color} />,
-};
-
 export default function TabBarButton({
   onPress,
   onLongPress,
@@ -36,6 +22,21 @@ export default function TabBarButton({
 }) {
   const { colors } = useTheme();
   const scale = useSharedValue(0);
+
+  const icons = {
+    contact: (props) => (
+      <AntDesign name="contacts" size={24} color={props.color} />
+    ),
+    ai: (props) => (
+      <MaterialCommunityIcons
+        name="robot-excited-outline"
+        size={24}
+        color={props.color}
+      />
+    ),
+    profile: (props) => <Feather name="user" size={24} color={props.color} />,
+    reports: (props) => <AntDesign name="form" size={24} color={props.color} />,
+  };
 
   useEffect(() => {
     scale.value = withSpring(
