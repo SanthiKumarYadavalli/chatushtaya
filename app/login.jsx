@@ -1,22 +1,17 @@
 import { useState } from "react";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { loginUser } from "../backend/utils";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Dimensions,
   Alert,
   Image,
 } from "react-native";
-
 import { icons } from "../constants";
-import { loginUser } from "../backend/utils";
-// import { images } from "../constants";
-// import { getCurrentUser, signIn } from "../../lib/appwrite";
 
 import { useAuthContext } from "../context/AuthProvider";
 const SignIn = () => {
@@ -29,110 +24,91 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const submit = async () => {
-    try {
-      if (form.email === "" || form.password === "") {
-        Alert.alert("Error", "Please fill in all fields");
-        return;
-      }
-      const response = await loginUser(form);
-      // console.log("login response", response);
-      setUser(response);
-      setIsLogged(true);
-      setSubmitting(true);
-      Alert.alert("Success", "Successfully logged in");
-      router.replace("/home");
+    if (form.email === "" || form.password === "") {
+      Alert.alert("Error", "Please fill in all fields");
+    } else {
+      try{
+        const response = await loginUser(form);
+        // console.log("login response", response);
+        setUser(response);
+        setIsLogged(true);
+        setSubmitting(true);
+        Alert.alert("Success", "Successfully logged in");
+        router.replace("/home");
 
-      setSubmitting(false);
-    } catch (e) {
-      Alert.alert("Login Failed", e.message); // Show an alert on failure
+        setSubmitting(false);
+      } catch (e) {
+        Alert.alert("Login Failed", e.message); // Show an alert on failure
+      }
     }
+    setSubmitting(false);
   };
 
   return (
-    <SafeAreaView className="bg-mywhite h-full">
-      <ScrollView>
-        <View
-          className="w-full flex justify-center h-full px-4 my-6"
-          style={{
-            minHeight: Dimensions.get("window").height - 100,
-          }}
-        >
-          <Text
-            className="text-2xl font-semibold mt-10 font-psemibold"
-            style={{ color: "#FFD5C2" }}
-          >
-            Log in to Aora
-          </Text>
-
-          <View className={`space-y-2 mt-7`}>
-            <Text className="text-base font-pmedium">Email</Text>
-
-            <View className="w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary flex flex-row items-center">
+    <SafeAreaView className="flex-1 bg-white px-4">
+        <View className="flex items-center">
+            <Image
+                source={require("../assets/images/signin.png")} // Image for login
+                className="w-42 h-52 mt-8 mb-5"
+                resizeMode="contain"
+            />
+        </View>
+        <View className="flex-1  position-absolute">
+          <View className="flex justify-center h-full">
+            <Text className="text-2xl font-semibold text-center text-gray-800">Log in to Chatushtaya</Text>
+            <View className="space-y-2 mt-7">
+              <Text className="text-base font-medium">Email</Text>
               <TextInput
-                className="flex-1 text-white font-psemibold text-base"
+                className="border border-gray-300 h-12 px-4 rounded-2xl"
                 value={form.email}
-                placeholderTextColor="#CDC1FF"
+                placeholder="Enter your email"
+                placeholderTextColor="#A9A9A9"
                 onChangeText={(e) => setForm({ ...form, email: e })}
                 keyboardType="email-address"
               />
             </View>
-          </View>
-          <View className={`space-y-2 mt-7`}>
-            <Text className="text-base font-pmedium">Password</Text>
 
-            <View className="w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary flex flex-row items-center">
-              <TextInput
-                className="flex-1 text-white font-psemibold text-base"
-                value={form.password}
-                placeholderTextColor="#CDC1FF"
-                onChangeText={(e) => setForm({ ...form, password: e })}
-                secureTextEntry={!showPassword}
-              />
-
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Image
-                  source={!showPassword ? icons.eye : icons.eyeHide}
-                  className="w-6 h-6"
-                  resizeMode="contain"
+            <View className="space-y-2 mt-7">
+              <Text className="text-base font-medium">Password</Text>
+              <View className="flex flex-row items-center border border-gray-300 h-12 px-4 rounded-2xl">
+                <TextInput
+                  className="flex-1 text-base h-12"
+                  value={form.password}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#A9A9A9"
+                  onChangeText={(e) => setForm({ ...form, password: e })}
+                  secureTextEntry={!showPassword}
                 />
-              </TouchableOpacity>
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                  <Image
+                    source={!showPassword ? icons.eye : icons.eyeHide}
+                    className="w-6 h-6"
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <TouchableOpacity
+              onPress={submit}
+              activeOpacity={0.7}
+              className={`bg-blue-500 rounded-xl min-h-[62px] flex flex-row justify-center items-center mt-7 ${
+                isSubmitting ? "opacity-50" : ""
+              }`}
+              disabled={isSubmitting}
+            >
+              <Text className={`text-white font-semibold text-lg`}>Sign In</Text>
+            </TouchableOpacity>
+
+            <View className="flex justify-center pt-5 flex-row gap-2">
+              <Text className="text-lg text-gray-600">Don't have an account?</Text>
+              <Link href="register" onpress={() => router.replace("/register")} className="text-lg font-semibold text-blue-500">
+                Signup
+              </Link>
             </View>
           </View>
-          <TouchableOpacity
-            onPress={submit}
-            activeOpacity={0.7}
-            className={`bg-secondary rounded-xl min-h-[62px] flex flex-row justify-center items-center mt-7 ${
-              isSubmitting ? "opacity-50" : ""
-            }`}
-            disabled={isSubmitting}
-          >
-            <Text className={`text-primary font-psemibold text-lg`}>
-              Sign In
-            </Text>
-
-            {isSubmitting && (
-              <ActivityIndicator
-                animating={isSubmitting}
-                color="#fff"
-                size="small"
-                className="ml-2"
-              />
-            )}
-          </TouchableOpacity>
-          <View className="flex justify-center pt-5 flex-row gap-2">
-            <Text className="text-lg text-gray-100 font-pregular">
-              Don't have an account?
-            </Text>
-            <Link
-              href="/register"
-              onPress={() => router.replace("/register")}
-              className="text-lg font-psemibold text-secondary"
-            >
-              Signup
-            </Link>
-          </View>
         </View>
-      </ScrollView>
+
     </SafeAreaView>
   );
 };

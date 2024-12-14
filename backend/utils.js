@@ -10,7 +10,8 @@ import { firestore, storage } from "./firebase";
 
 const auth = getAuth();
 
-export const registerUser = async (email, password) => {
+export const registerUser = async (data) => {
+  const {email, password} = data;
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -26,7 +27,8 @@ export const registerUser = async (email, password) => {
   }
 };
 
-export const loginUser = async ({ email, password }) => {
+export const loginUser = async (data) => {
+  const {email, password} = data;
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -129,26 +131,10 @@ export const createReport = async (data) => {
   }
 };
 
-export const fetchAllReports = async () => {
-  try {
-    const reportsCollection = collection(firestore, "reports");
-    const querySnapshot = await getDocs(reportsCollection);
-
-    const reports = [];
-    querySnapshot.forEach((doc) => {
-      reports.push({ id: doc.id, ...doc.data() });
-    });
-
-    return reports;
-  } catch (error) {
-    console.error("Error fetching reports:", error);
-    throw error;
-  }
-};
 
 const fetchReportsByUserId = async (userId) => {
   try {
-    const reportsRef = collection(db, "reports");
+    const reportsRef = collection(firestore, "reports");
     const q = query(reportsRef, where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
 
@@ -165,15 +151,18 @@ const fetchReportsByUserId = async (userId) => {
   }
 };
 
-const fetchReportsByQuery = async (filters) => {
+export const fetchReportsByQuery = async (filters) => {
   try {
-    const reportsRef = collection(db, "reports");
+    const reportsRef = collection(firestore, "reports");
 
     // Create query dynamically based on filters
     let q = reportsRef;
 
     if (filters.location) {
       q = query(q, where("location", "==", filters.location));
+    }
+    if (filters.status) {
+      q = query(q, where("status", "==", filters.status));
     }
     if (filters.type) {
       q = query(q, where("type", "==", filters.type));
@@ -205,3 +194,127 @@ const fetchReportsByQuery = async (filters) => {
     throw error;
   }
 };
+
+export const fetchAllReports = async () => {
+  try {
+    const reportsCollection = collection(firestore, "reports");
+    const reportSnapshot = await getDocs(reportsCollection);
+    const reportsList = reportSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}));
+    return reportsList;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+}
+
+export const updateReport = async (reportId, updatedData) => {
+  try {
+    const reportRef = doc(firestore, "reports", reportId);
+    await updateDoc(reportRef, updatedData);
+    console.log("Report updated successfully!");
+  } catch (error) {
+    console.error("Error updating report:", error);
+    throw error;
+  }
+};
+
+export const deleteReport = async (reportId) => {
+  try {
+    const reportRef = doc(firestore, "reports", reportId);
+    await deleteDoc(reportRef);
+    console.log("Report deleted successfully!");
+  } catch (error) {
+    console.error("Error deleting report:", error);
+    throw error;
+  }
+};
+
+export const registerMember = async (data) => {
+  try {
+    const membersCollection = collection(firestore, "members");
+    await addDoc(membersCollection, data);
+    console.log("Member added successfully!");
+  } catch (error) {
+    console.error("Error adding member:", error);
+    throw error;
+  }
+};
+
+export const getMemberById = async (memberId) => {
+  try {
+    const memberRef = doc(firestore, "members", memberId);
+    const memberSnapshot = await getDoc(memberRef);
+    const memberData = memberSnapshot.data();
+    return memberData;
+  } catch (error) {
+    console.error("Error getting member by ID:", error);
+    throw error;
+  }
+};
+
+export const updateMember = async (memberId, updatedData) => {
+  try {
+    const memberRef = doc(firestore, "members", memberId);
+    await updateDoc(memberRef, updatedData);
+    console.log("Member updated successfully!");
+  } catch (error) {
+    console.error("Error updating member:", error);
+    throw error;
+  }
+};
+
+export const deleteMember = async (memberId) => {
+  try {
+    const memberRef = doc(firestore, "members", memberId);
+    await deleteDoc(memberRef);
+    console.log("Member deleted successfully!");
+  } catch (error) {
+    console.error("Error deleting member:", error);
+    throw error;
+  }
+};
+
+export const addContact = async (contact) => {
+  try {
+    const contactsCollection = collection(firestore, "contacts");
+    await addDoc(contactsCollection, contact);
+    console.log("Contact added successfully!");
+  } catch (error) {
+    console.error("Error adding contact:", error);
+    throw error;
+  }
+};
+
+export const updateContact = async (contactId, updatedData) => {
+  try {
+    const contactRef = doc(firestore, "contacts", contactId);
+    await updateDoc(contactRef, updatedData);
+    console.log("Contact updated successfully!");
+  } catch (error) {
+    console.error("Error updating contact:", error);
+    throw error;
+  }
+};
+
+export const deleteContact = async (contactId) => {
+  try {
+    const contactRef = doc(firestore, "contacts", contactId);
+    await deleteDoc(contactRef);
+    console.log("Contact deleted successfully!");
+  } catch (error) {
+    console.error("Error deleting contact:", error);
+    throw error;
+  }
+};
+
+export const fetchContacts = async () => {
+  try {
+    const contactsCollection = collection(firestore, "contacts");
+    const contactSnapshot = await getDocs(contactsCollection);
+    const contactsList = contactSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}));
+    return contactsList;
+  } catch (error) {
+    console.error("Error fetching contacts:", error);
+    throw error;
+  }
+}

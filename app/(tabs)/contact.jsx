@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import {
   View,
   Text,
@@ -7,48 +7,16 @@ import {
   SafeAreaView,
   Linking,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons"; // Install: expo install @expo/vector-icons
+import { FontAwesome5 } from "@expo/vector-icons";
+import { fetchContacts } from "../../backend/utils";
 
 export default function contact() {
-  const contacts = [
-    {
-      title: "University Helpline",
-      description:
-        "Contact the university grievance cell for immediate assistance.",
-      email: "helpline@university.com",
-      phoneNumber: "+1234567890",
-      whatsapp: "+1234567890",
-    },
-    {
-      title: "Campus Security",
-      description:
-        "Reach out to campus security for emergencies and safety concerns.",
-      email: "security@university.com",
-      phoneNumber: "+9876543210",
-      whatsapp: "+9876543210",
-    },
-    {
-      title: "Student Affairs",
-      description: "Assistance with student issues and non-academic matters.",
-      email: "studentaffairs@university.com",
-      phoneNumber: "+1122334455",
-      whatsapp: "+1122334455",
-    },
-    {
-      title: "Student Affairs",
-      description: "Assistance with student issues and non-academic matters.",
-      email: "studentaffairs@university.com",
-      phoneNumber: "+1122334455",
-      whatsapp: "+1122334455",
-    },
-    {
-      title: "Student Affairs",
-      description: "Assistance with student issues and non-academic matters.",
-      email: "studentaffairs@university.com",
-      phoneNumber: "+1122334455",
-      whatsapp: "+1122334455",
-    },
-  ];
+  const [contacts, setContacts] = useState([]);
+  useEffect(() => {
+    fetchContacts().then((data) => {
+      setContacts(data);
+    });
+  }, [1000]);
 
   const handleLinkPress = (type, value) => {
     switch (type) {
