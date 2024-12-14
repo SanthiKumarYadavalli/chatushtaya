@@ -4,9 +4,8 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage"; // React Native local storage
-import { addDoc, collection } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { v4 as uuidv4 } from "uuid";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid"; // Install: npm install uuid
 import { firestore, storage } from "./firebase";
 
 const auth = getAuth();
@@ -40,7 +39,7 @@ export const loginUser = async (data) => {
     const user = userCredential.user;
     console.log(user);
     await AsyncStorage.setItem("user", JSON.stringify(user)); // Store user locally
-    return user;
+    return await getStoredUser();
   } catch (error) {
     throw error;
   }
@@ -49,7 +48,7 @@ export const loginUser = async (data) => {
 export const getStoredUser = async () => {
   try {
     const user = await AsyncStorage.getItem("user");
-    console.log("getstore", user);
+    // console.log("getstore", user);
     return user ? JSON.parse(user) : null;
   } catch (error) {
     throw error;
@@ -64,70 +63,78 @@ export const logoutUser = async () => {
   }
 };
 
-// Function to upload a single media
-const uploadMedia = async (mediaUri) => {
+// Function to upload a single image
+import * as FileSystem from "expo-file-system";
+
+const upload = async (uri, type) => {
   try {
-    const response = await fetch(mediaUri);
-    const blob = await response.blob();
-    const mediaId = uuidv4();
-    const mediaRef = ref(storage, `evidence_images/${mediaId}`);
-    await uploadBytes(mediaRef, blob);
-    const downloadUrl = await getDownloadURL(mediaRef);
-    return downloadUrl; // Return the image URL for storing in Firestore
+    const cloudinaryUrl = "https://api.cloudinary.com/v1_1/dgt35afpc/upload";
+    const uploadPreset = "women696";
+
+    // console.log("Starting upload for URI:", uri);
+
+    const blob = await FileSystem.readAsStringAsync(uri, {
+      encoding: "base64",
+    });
+
+    const formData = new FormData();
+    formData.append("file", `data:${type}/;base64,${blob}`);
+    formData.append("upload_preset", uploadPreset);
+    formData.append("cloud_name", "dgt35afpc");
+
+    console.log("FormData prepared. Starting upload to Cloudinary...");
+    const uploadResponse = await fetch(cloudinaryUrl, {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await uploadResponse.json();
+    // console.log("Upload response received:", result);
+
+    if (!uploadResponse.ok) {
+      throw new Error(result.error?.message || `Failed to upload ${type}`);
+    }
+
+    return result.secure_url;
   } catch (error) {
-    console.error("Error uploading media:", error);
+    console.error(`Error uploading ${type}:`, error);
     throw error;
   }
 };
 
-// Function to add a new report
-export const createReport = async (formData) => {
-  const {
-    types,
-    date,
-    time,
-    location,
-    evidenceUris, // Array of local image URIs
-    anonymous,
-    userId,
-    status,
-    additionalInformation,
-  }=data;
+export const createReport = async (data) => {
   try {
-    // Upload images and get their URLs
+    // Upload evidences and determine their types
+    console.log(data.evidence.assets);
     const evidenceUrls = [];
-    for (const uri of evidenceUris) {
-      const url = await uploadMedia(uri);
+    for (const assest of data.evidence.assets) {
+      const url = await upload(assest.uri, assest.type); // Upload as image or video
       evidenceUrls.push(url);
     }
-
+    // console.log(evidenceUrls);
     // Create the report document
     const reportData = {
-      types,
-      date,
-      time,
-      location,
-      evidences: evidenceUrls,
-      anonymous,
-      userId: anonymous ? null : userId,
-      status,
-      additionalInformation,
-      submittedAt:firestore.FieldValue.serverTimestamp()
+      ...data,
+      evidence: evidenceUrls,
+      status: "unreviewed",
     };
 
+    console.log("Report Data:", data);
     const reportsCollection = collection(firestore, "reports");
     await addDoc(reportsCollection, reportData);
 
     console.log("Report created successfully!");
+    console.log(await fetchAllReports());
   } catch (error) {
     console.error("Error creating report:", error);
     throw error;
   }
 };
 
-export const fetchReportsByUserId = async (userId) => {
+
+const fetchReportsByUserId = async (userId) => {
   try {
-    const reportsRef = collection(db, "reports");
+    const reportsRef = collection(firestore, "reports");
     const q = query(reportsRef, where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
 
@@ -146,7 +153,7 @@ export const fetchReportsByUserId = async (userId) => {
 
 export const fetchReportsByQuery = async (filters) => {
   try {
-    const reportsRef = collection(db, "reports");
+    const reportsRef = collection(firestore, "reports");
 
     // Create query dynamically based on filters
     let q = reportsRef;
@@ -202,7 +209,7 @@ export const fetchAllReports = async () => {
 
 export const updateReport = async (reportId, updatedData) => {
   try {
-    const reportRef = doc(db, "reports", reportId);
+    const reportRef = doc(firestore, "reports", reportId);
     await updateDoc(reportRef, updatedData);
     console.log("Report updated successfully!");
   } catch (error) {
@@ -213,7 +220,7 @@ export const updateReport = async (reportId, updatedData) => {
 
 export const deleteReport = async (reportId) => {
   try {
-    const reportRef = doc(db, "reports", reportId);
+    const reportRef = doc(firestore, "reports", reportId);
     await deleteDoc(reportRef);
     console.log("Report deleted successfully!");
   } catch (error) {
@@ -224,7 +231,7 @@ export const deleteReport = async (reportId) => {
 
 export const registerMember = async (data) => {
   try {
-    const membersCollection = collection(db, "members");
+    const membersCollection = collection(firestore, "members");
     await addDoc(membersCollection, data);
     console.log("Member added successfully!");
   } catch (error) {
@@ -235,7 +242,7 @@ export const registerMember = async (data) => {
 
 export const getMemberById = async (memberId) => {
   try {
-    const memberRef = doc(db, "members", memberId);
+    const memberRef = doc(firestore, "members", memberId);
     const memberSnapshot = await getDoc(memberRef);
     const memberData = memberSnapshot.data();
     return memberData;
@@ -247,7 +254,7 @@ export const getMemberById = async (memberId) => {
 
 export const updateMember = async (memberId, updatedData) => {
   try {
-    const memberRef = doc(db, "members", memberId);
+    const memberRef = doc(firestore, "members", memberId);
     await updateDoc(memberRef, updatedData);
     console.log("Member updated successfully!");
   } catch (error) {
@@ -258,7 +265,7 @@ export const updateMember = async (memberId, updatedData) => {
 
 export const deleteMember = async (memberId) => {
   try {
-    const memberRef = doc(db, "members", memberId);
+    const memberRef = doc(firestore, "members", memberId);
     await deleteDoc(memberRef);
     console.log("Member deleted successfully!");
   } catch (error) {
@@ -269,7 +276,7 @@ export const deleteMember = async (memberId) => {
 
 export const addContact = async (contact) => {
   try {
-    const contactsCollection = collection(db, "contacts");
+    const contactsCollection = collection(firestore, "contacts");
     await addDoc(contactsCollection, contact);
     console.log("Contact added successfully!");
   } catch (error) {
@@ -280,7 +287,7 @@ export const addContact = async (contact) => {
 
 export const updateContact = async (contactId, updatedData) => {
   try {
-    const contactRef = doc(db, "contacts", contactId);
+    const contactRef = doc(firestore, "contacts", contactId);
     await updateDoc(contactRef, updatedData);
     console.log("Contact updated successfully!");
   } catch (error) {
@@ -291,7 +298,7 @@ export const updateContact = async (contactId, updatedData) => {
 
 export const deleteContact = async (contactId) => {
   try {
-    const contactRef = doc(db, "contacts", contactId);
+    const contactRef = doc(firestore, "contacts", contactId);
     await deleteDoc(contactRef);
     console.log("Contact deleted successfully!");
   } catch (error) {
@@ -302,7 +309,7 @@ export const deleteContact = async (contactId) => {
 
 export const fetchContacts = async () => {
   try {
-    const contactsCollection = collection(db, "contacts");
+    const contactsCollection = collection(firestore, "contacts");
     const contactSnapshot = await getDocs(contactsCollection);
     const contactsList = contactSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}));
     return contactsList;

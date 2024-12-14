@@ -8,15 +8,29 @@ import {
   SafeAreaView,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons"; // Install: expo install @expo/vector-icons
-
+import { logoutUser } from "../backend/utils";
+import { router } from "expo-router";
+import { useAuthContext } from "../context/AuthProvider";
 export default function profile() {
-  const [user, setUser] = useState({
+  const { setUser, setIsLogged } = useAuthContext();
+  const user = {
     name: "Monkey D Luffy",
     email: "rr200143rguktrkv.ac.in",
     profileImage: "https://via.placeholder.com/150", // Profile image URL
     reportedIncidents: 5,
     anonymousReports: 3,
-  });
+  };
+
+  async function handleLogout() {
+    try {
+      await logoutUser();
+      setUser(null);
+      setIsLogged(false);
+      router.replace("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <SafeAreaView className="h-full">
@@ -66,7 +80,7 @@ export default function profile() {
               <Text className="ml-4 text-gray-700">Account Settings</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={handleLogout}
               className="flex-row items-center bg-white p-4 rounded-lg shadow-md"
             >
               <FontAwesome5 name="sign-out-alt" size={20} color="#f72c5b" />

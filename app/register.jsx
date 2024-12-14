@@ -35,12 +35,12 @@ const SignUp = () => {
       <View className="flex items-center">
             <Image
                 source={require("../assets/images/register.png")} // Image for login
-                className="w-42 h-52 mt-12"
+                className="w-42 h-52 mt-8 mb-5"
                 resizeMode="contain"
             />
         </View>
 
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+      <View className="flex-1 mt-5">
         <View className="flex justify-center h-full">
           <Text className="text-2xl font-semibold text-center text-gray-800">Sign Up to Chatushtaya</Text>
 
@@ -95,7 +95,7 @@ const SignUp = () => {
             </Link>
           </View>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };

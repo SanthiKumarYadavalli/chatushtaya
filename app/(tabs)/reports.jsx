@@ -7,32 +7,21 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { fetchReportsByUserId } from "../../backend/utils"; // Adjust the path as necessary
-import { getStoredUser } from "../../backend/utils"; // To get the current user's ID
+import { useAuthContext } from "../../context/AuthProvider";
 
 export default function ReportsScreen() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const user = useAuthContext();
+  if (!user) {
+    return <Login />;
+  }
   useEffect(() => {
-    const loadReports = async () => {
-      try {
-        const user = await getStoredUser();
-        if (user) {
-          const userId = user.uid; // Assuming user object has uid property
-          const fetchedReports = await fetchReportsByUserId(userId);
-          setReports(fetchedReports);
-        } else {
-          setError("User not found");
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadReports();
+    fetchReportsByUserId(user.id).then((data) => {
+      setReports(data);
+      setLoading(false);
+    });
   }, []);
 
   if (loading) {

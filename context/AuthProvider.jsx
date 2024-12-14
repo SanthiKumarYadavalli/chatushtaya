@@ -23,7 +23,7 @@ export default function AuthProvider({ children }) {
         // console.log("context: ", result);
         if (result) {
           setIsLogged(true);
-          setUser(result);
+          setUser((prev) => result);
         }
       } catch (err) {
         console.log("from context:", err);
@@ -32,7 +32,7 @@ export default function AuthProvider({ children }) {
       }
     }
     get();
-  }, []);
+  }, [user, isLogged]);
 
   return (
     <AuthContext.Provider

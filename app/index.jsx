@@ -5,8 +5,8 @@ import { Redirect } from "expo-router";
 
 const App = () => {
   const { isLogged, user } = useAuthContext();
-
-  if (isLogged || user) {
+  // console.log("fromindex", user);
+  if (user) {
     return <Redirect href={"/home"} />;
   }
 
