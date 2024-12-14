@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,18 +8,28 @@ import {
   SafeAreaView,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons"; // Install: expo install @expo/vector-icons
-import { logoutUser } from "../backend/utils";
+import { logoutUser, userReportCounts } from "../backend/utils";
 import { router } from "expo-router";
 import { useAuthContext } from "../context/AuthProvider";
 export default function profile() {
-  const { setUser, setIsLogged } = useAuthContext();
-  const user = {
-    name: "Monkey D Luffy",
-    email: "rr200143rguktrkv.ac.in",
-    profileImage: "https://via.placeholder.com/150", // Profile image URL
-    reportedIncidents: 5,
-    anonymousReports: 3,
-  };
+  const { setUser, setIsLogged, user } = useAuthContext();
+  const [reportCnt, setReportCnt] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchReportCounts() {
+      try {
+        const { reportedIncidents, anonymousReports } = await userReportCounts(
+          user.id
+        );
+        setReportCnt({ reportedIncidents, anonymousReports });
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchReportCounts();
+  }, []);
 
   async function handleLogout() {
     try {
@@ -39,18 +49,27 @@ export default function profile() {
         <View className="w-full flex justify-center items-center h-full px-4 my-6">
           <View className="items-center mb-6 mt-12">
             <Image
-              source={{ uri: user.profileImage }}
-              className="w-32 h-32 rounded-full border-2 border-mylavender mb-4"
+              source={{
+                uri: `https://ui-avatars.com/api/?name=${user.username}&background=random`,
+              }}
+              className="w-32 h-32 rounded-full  mb-4"
             />
-            <Text className="text-2xl font-bold text-blue-600 mb-2 font-pmedium">
-              {user.name}
+            <Text className="text-2xl font-psemibold mb-2">
+              {user.username}
             </Text>
-            <Text className=" mb-1 font-pextralight">
-              {user.reportedIncidents} Reports Filed
-            </Text>
-            <Text className=" mb-1 font-pextralight">
-              {user.anonymousReports} Anonymous Reports
-            </Text>
+            {loading ? (
+              <Text className="font-pextralight">Loading...</Text>
+            ) : (
+              <>
+                <Text className=" mb-1 font-pextralight">
+                  {reportCnt.reportedIncidents} Reports Filed
+                </Text>
+                <Text className=" mb-1 font-pextralight">
+                  {reportCnt.anonymousReports} Anonymous Reports
+                </Text>
+              </>
+            )}
+
             <Text className="font-pregular">{user.email}</Text>
           </View>
 

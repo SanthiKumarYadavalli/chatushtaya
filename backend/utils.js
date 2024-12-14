@@ -4,13 +4,54 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage"; // React Native local storage
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid"; // Install: npm install uuid
 import { firestore, storage } from "./firebase";
+import * as FileSystem from "expo-file-system";
+import { useAuthContext } from "../context/AuthProvider";
 
 const auth = getAuth();
+
+export const userReportCounts = async (id) => {
+  const reports = await fetchReportsByUserId(id);
+  const reportedIncidents = reports.length;
+  const anonymousReports = reports.filter((report) => report.anonymous).length;
+  return { reportedIncidents, anonymousReports };
+};
+
+export const loginUser = async (data) => {
+  const { email, password } = data;
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const authUser = userCredential.user;
+    const userCollection = collection(firestore, "members");
+    const q = query(userCollection, where("id", "==", authUser.uid));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      throw new Error("User not found in Firestore");
+    }
+
+    const userDoc = querySnapshot.docs[0];
+    const userData = { id: userDoc.id, ...userDoc.data() };
+
+    // Store user data locally
+    await AsyncStorage.setItem("user", JSON.stringify(userData));
+
+    // Return stored user
+    return await getStoredUser();
+  } catch (error) {
+    console.error("Error logging in user:", error.message);
+    throw error;
+  }
+};
+
 export const registerUser = async (data) => {
-  const {email, password} = data;
+  const { email, password } = data;
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -18,27 +59,7 @@ export const registerUser = async (data) => {
       password
     );
     const user = userCredential.user;
-    // console.log(user);
-    await AsyncStorage.setItem("user", JSON.stringify(user)); // Store user locally
     return user;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const loginUser = async (data) => {
-  const {email, password} = data;
-  try {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-    const user = userCredential.user;
-    console.log(user);
-    await AsyncStorage.setItem("user", JSON.stringify(user)); // Store user locally
-    return await getStoredUser();
   } catch (error) {
     throw error;
   }
@@ -61,10 +82,6 @@ export const logoutUser = async () => {
     throw error;
   }
 };
-
-// Function to upload a single image
-import * as FileSystem from "expo-file-system";
-import { useAuthContext } from "../context/AuthProvider";
 
 const upload = async (uri, type) => {
   try {
@@ -132,8 +149,7 @@ export const createReport = async (data) => {
   }
 };
 
-
-const fetchReportsById = async (id) => {
+const fetchReportsByUserId = async (userId) => {
   try {
     const reportsRef = collection(firestore, "reports");
     const q = query(reportsRef, where("userId", "==", id));
@@ -200,13 +216,16 @@ export const fetchAllReports = async () => {
   try {
     const reportsCollection = collection(firestore, "reports");
     const reportSnapshot = await getDocs(reportsCollection);
-    const reportsList = reportSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}));
+    const reportsList = reportSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     return reportsList;
   } catch (error) {
     console.error("Error fetching reports:", error);
     throw error;
   }
-}
+};
 
 export const updateReport = async (reportId, updatedData) => {
   try {
@@ -232,11 +251,12 @@ export const deleteReport = async (reportId) => {
 
 export const registerMember = async (data) => {
   try {
+    const user = await registerUser(data);
     const membersCollection = collection(firestore, "members");
-    await addDoc(membersCollection, data);
-    console.log("Member added successfully!");
+    await addDoc(membersCollection, { ...data, id: user.uid });
+    console.log("Member added successfully!", user);
   } catch (error) {
-    console.error("Error adding member:", error);
+    // console.error("Error adding member:", error);
     throw error;
   }
 };
@@ -312,10 +332,13 @@ export const fetchContacts = async () => {
   try {
     const contactsCollection = collection(firestore, "contacts");
     const contactSnapshot = await getDocs(contactsCollection);
-    const contactsList = contactSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}));
+    const contactsList = contactSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     return contactsList;
   } catch (error) {
     console.error("Error fetching contacts:", error);
     throw error;
   }
-}
+};
