@@ -79,7 +79,7 @@ const SingleReport = () => {
           {/* Report Content */}
           <View className="bg-white p-6 h-[80vh] rounded-2xl shadow-lg w-full ">
             {/* Status */}
-            <View className="flex-1 justify-center">
+            <View className="">
               <View className="flex flex-row justify-start gap-3 items-center mb-4">
                 <Text className="text-lg font-semibold">Status:</Text>
                 <Text

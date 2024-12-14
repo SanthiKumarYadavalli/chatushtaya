@@ -32,7 +32,7 @@ export default function ReportsScreen() {
         setError("Failed to fetch reports.");
         setLoading(false);
       });
-  }, [user]);
+  }, []);
 
   if (loading) {
     return <LoadingScreen />;
@@ -81,7 +81,7 @@ export default function ReportsScreen() {
                 >
                   <View className="bg-white p-4 rounded-lg mb-4 shadow-lg border border-gray-300">
                     <Text className="text-xl font-semibold text-gray-800">
-                      {`Report ${sortedReports.length - index}`}
+                      {`Report ${index + 1}`}
                     </Text>
                     <Text className="text-md font-medium text-gray-700">
                       {item.types.join(", ")}
