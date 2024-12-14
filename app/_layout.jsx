@@ -41,12 +41,10 @@ export default function RootLayout() {
         <Stack.Screen name="home" options={{ headerShown: false }} />
         <Stack.Screen name="(form)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        {/* <Stack.Screen name="history" />
-        <Stack.Screen name="support" /> */}
         <Stack.Screen name="register" options={{ headerShown: false }} />
         <Stack.Screen name="login" options={{ headerShown: false }} />
         <Stack.Screen name="profile" options={{ headerShown: false }} />
-        <Stack.Screen name="notify" />
+        <Stack.Screen name="notify" options={{ headerShown: false }}/>
         <Stack.Screen name="landing" options={{ headerShown: false }} />
       </Stack>
     </AuthProvider>

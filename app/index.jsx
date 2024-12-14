@@ -8,7 +8,7 @@ const App = () => {
   const { isLogged, user } = useAuthContext();
   // console.log("fromindex", user);
   if (user) {
-    return <Redirect href={"/home"} />;
+    return <Redirect href={"home"} />;
   }
 
   return <Login />;

@@ -15,10 +15,12 @@ import Feather from "@expo/vector-icons/Feather";
 import { useAuthContext } from "../context/AuthProvider";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Login from "./login";
+import Notify from "./notify";
 
 const Home = () => {
   const dialEmergency = () => {
-    Linking.openURL("tel:100");
+    // Linking.openURL("tel:100");
+    router.push("notify");
   };
   const { user } = useAuthContext();
   if (!user) {
