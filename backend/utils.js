@@ -17,9 +17,6 @@ import { v4 as uuidv4 } from "uuid"; // Install: npm install uuid
 import { firestore, storage } from "./firebase";
 import * as FileSystem from "expo-file-system";
 
-// import { sendWelcomeEmail, sendReportSubmissionEmail } from "./mail";
-
-// const {user} = useAuthContext();
 const auth = getAuth();
 
 export const userReportCounts = async (id) => {
@@ -152,8 +149,6 @@ export const createReport = async (data) => {
     await addDoc(reportsCollection, reportData);
 
     console.log("Report created successfully!");
-    // console.log(await fetchAllReports());
-    // await sendReportSubmissionEmail(data.email, data.username);
   } catch (error) {
     console.error("Error creating report:", error);
     throw error;
