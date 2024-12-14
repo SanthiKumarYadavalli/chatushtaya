@@ -2,14 +2,15 @@ import { Alert, Pressable, Text, View } from "react-native";
 import React from "react";
 import { createReport } from "../backend/utils";
 import { useReportContext } from "../context/ReportProvider";
+import { useAuthContext } from "../context/AuthProvider";
 
 const NextButton = ({ disabledContidion, onPress, text = "Next" }) => {
   const { formData } = useReportContext();
-
+  const {user}= useAuthContext();
   async function handlePress() {
     try {
       if (text == "Submit") {
-        await createReport(formData);
+        await createReport({...formData,userId:user.id});
       }
       onPress();
     } catch (e) {

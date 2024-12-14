@@ -20,6 +20,9 @@ const irrelevantKeywords = [
   "AI models",
   "science query",
   "technology",
+  "write some code",
+  "write code",
+  "help me with homework",
 ];
 
 export default function Response(props) {

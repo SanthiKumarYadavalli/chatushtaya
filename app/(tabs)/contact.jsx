@@ -36,7 +36,7 @@ export default function contact() {
 
   return (
     <SafeAreaView className="h-full">
-      <ScrollView className="px-4 py-6 mt-12">
+      <ScrollView className="px-4 py-6 mt-12 mb-32">
         <Text className="text-3xl text-center font-psemibold py-3 mb-7">
           Contact Authorities
         </Text>
