@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from "react";
+import LoadingScreen from "../(form)/loading";
 import {
   View,
   Text,
@@ -11,12 +12,14 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { fetchContacts } from "../../backend/utils";
 
 export default function contact() {
+  const [loading, setLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
   useEffect(() => {
     fetchContacts().then((data) => {
       setContacts(data);
+      setLoading(false);
     });
-  }, [1000]);
+  }, []);
 
   const handleLinkPress = (type, value) => {
     switch (type) {
@@ -33,10 +36,13 @@ export default function contact() {
         break;
     }
   };
+  if(loading){
+    return <LoadingScreen />
+  }
 
   return (
     <SafeAreaView className="h-full">
-      <ScrollView className="px-4 py-6 mt-12">
+      <ScrollView className="px-4 py-6 mt-12 mb-32">
         <Text className="text-3xl text-center font-psemibold py-3 mb-7">
           Contact Authorities
         </Text>

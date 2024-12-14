@@ -7,7 +7,7 @@ const LoadingScreen = () => {
     <FormContainer>
         <View className="flex items-center justify-center h-full">
             <ActivityIndicator size="large" color="#6892D5" />
-            <Text className="text-xl text-gray-800 font-pmedium">Submitting...</Text>
+            <Text className="text-xl text-gray-800 font-pmedium">Wait a Moment...</Text>
         </View>
     </FormContainer>
   )

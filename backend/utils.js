@@ -8,8 +8,9 @@ import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid"; // Install: npm install uuid
 import { firestore, storage } from "./firebase";
 import * as FileSystem from "expo-file-system";
-import { useAuthContext } from "../context/AuthProvider";
+// import { useAuthContext } from "../context/AuthProvider";
 
+// const {user} = useAuthContext();
 const auth = getAuth();
 
 export const userReportCounts = async (id) => {
@@ -134,7 +135,7 @@ export const createReport = async (data) => {
       ...data,
       evidence: evidenceUrls,
       status: "unreviewed",
-      userId:useAuthContext().id,
+      // userId:user.id,
     };
 
     console.log("Report Data:", data);
@@ -149,7 +150,7 @@ export const createReport = async (data) => {
   }
 };
 
-const fetchReportsByUserId = async (userId) => {
+export const fetchReportsByUserId = async (id) => {
   try {
     const reportsRef = collection(firestore, "reports");
     const q = query(reportsRef, where("userId", "==", id));

@@ -34,8 +34,9 @@ export default function TabBarButton({
         color={props.color}
       />
     ),
-    profile: (props) => <Feather name="user" size={24} color={props.color} />,
+    profile: (props) => <Feather name="question-mark" size={24} color={props.color} />,
     reports: (props) => <AntDesign name="form" size={24} color={props.color} />,
+    default: (props) => <Feather name="question-mark" size={24} color={props.color} />
   };
 
   useEffect(() => {
@@ -45,6 +46,7 @@ export default function TabBarButton({
     );
   }, [scale, isFocused]);
 
+  const currentIcon = icons[routeName]?icons[routeName]:icons['default'];
   const animatedTextStyle = useAnimatedStyle(() => {
     const opacity = interpolate(scale.value, [0, 1], [1, 0]);
     return {
@@ -72,7 +74,7 @@ export default function TabBarButton({
       className="flex-1 justify-center items-center"
     >
       <Animated.Text style={animatedIconStyle}>
-        {icons[routeName]({ color: isFocused ? "#fff" : colors.text })}
+        {currentIcon({ color: isFocused ? "#fff" : colors.text })}
       </Animated.Text>
       <Animated.Text
         style={[
