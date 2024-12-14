@@ -1,19 +1,12 @@
-import { ScrollView } from 'react-native'
 import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
-const FormContainer = ({ children }) => {
-  return (
-    <ScrollView
-        contentContainerStyle={{
-        paddingVertical: 20,
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100%",
-        }}
-    >
-        {children}
-    </ScrollView>
-  )
+const FormContainer = ({children}) => {
+    return (
+        <SafeAreaView className="flex-1 bg-white p-7 min-h-full">
+            {children}
+        </SafeAreaView>
+    );
 }
 
 export default FormContainer;

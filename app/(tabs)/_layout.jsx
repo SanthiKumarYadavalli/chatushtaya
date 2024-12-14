@@ -30,8 +30,8 @@ const TabLayout = () => {
       />
       <Tabs.Screen name="ai" options={{ title: "AI", headerShown: false }} />
       <Tabs.Screen
-        name="profile"
-        options={{ title: "Profile", headerShown: false }}
+        name="reports"
+        options={{ title: "Reports", headerShown: false }}
       />
     </Tabs>
   );

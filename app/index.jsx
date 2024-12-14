@@ -6,9 +6,9 @@ import Landing from "./landing";
 
 const App = () => {
   const { isLogged, user } = useAuthContext();
-
-  if (isLogged || user) {
-    return <Redirect href={"/landing"} />;
+  // console.log("fromindex", user);
+  if (user) {
+    return <Redirect href={"/home"} />;
   }
 
   return <Login />;

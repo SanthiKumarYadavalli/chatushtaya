@@ -4,8 +4,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage"; // React Native local storage
-import { addDoc, collection } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid"; // Install: npm install uuid
 import { firestore, storage } from "./firebase";
 
@@ -38,7 +37,7 @@ export const loginUser = async ({ email, password }) => {
     const user = userCredential.user;
     console.log(user);
     await AsyncStorage.setItem("user", JSON.stringify(user)); // Store user locally
-    return user;
+    return await getStoredUser();
   } catch (error) {
     throw error;
   }
@@ -47,7 +46,7 @@ export const loginUser = async ({ email, password }) => {
 export const getStoredUser = async () => {
   try {
     const user = await AsyncStorage.getItem("user");
-    console.log("getstore", user);
+    // console.log("getstore", user);
     return user ? JSON.parse(user) : null;
   } catch (error) {
     throw error;
@@ -63,60 +62,86 @@ export const logoutUser = async () => {
 };
 
 // Function to upload a single image
-const uploadImage = async (imageUri) => {
+import * as FileSystem from "expo-file-system";
+
+const upload = async (uri, type) => {
   try {
-    const response = await fetch(imageUri);
-    const blob = await response.blob();
-    const imageId = uuidv4();
-    const imageRef = ref(storage, `evidence_images/${imageId}`);
-    await uploadBytes(imageRef, blob);
-    const downloadUrl = await getDownloadURL(imageRef);
-    return downloadUrl; // Return the image URL for storing in Firestore
+    const cloudinaryUrl = "https://api.cloudinary.com/v1_1/dgt35afpc/upload";
+    const uploadPreset = "women696";
+
+    // console.log("Starting upload for URI:", uri);
+
+    const blob = await FileSystem.readAsStringAsync(uri, {
+      encoding: "base64",
+    });
+
+    const formData = new FormData();
+    formData.append("file", `data:${type}/;base64,${blob}`);
+    formData.append("upload_preset", uploadPreset);
+    formData.append("cloud_name", "dgt35afpc");
+
+    console.log("FormData prepared. Starting upload to Cloudinary...");
+    const uploadResponse = await fetch(cloudinaryUrl, {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await uploadResponse.json();
+    // console.log("Upload response received:", result);
+
+    if (!uploadResponse.ok) {
+      throw new Error(result.error?.message || `Failed to upload ${type}`);
+    }
+
+    return result.secure_url;
   } catch (error) {
-    console.error("Error uploading image:", error);
+    console.error(`Error uploading ${type}:`, error);
     throw error;
   }
 };
 
-// Function to add a new report
-export const createReport = async ({
-  type,
-  date,
-  time,
-  location,
-  evidenceUris, // Array of local image URIs
-  anonymous,
-  userId,
-  status,
-  additionalInformation,
-}) => {
+export const createReport = async (data) => {
   try {
-    // Upload images and get their URLs
+    // Upload evidences and determine their types
+    console.log(data.evidence.assets);
     const evidenceUrls = [];
-    for (const uri of evidenceUris) {
-      const url = await uploadImage(uri);
+    for (const assest of data.evidence.assets) {
+      const url = await upload(assest.uri, assest.type); // Upload as image or video
       evidenceUrls.push(url);
     }
-
+    // console.log(evidenceUrls);
     // Create the report document
     const reportData = {
-      type,
-      date,
-      time,
-      location,
-      evidences: evidenceUrls,
-      anonymous,
-      userId: anonymous ? null : userId,
-      status,
-      additionalInformation,
+      ...data,
+      evidence: evidenceUrls,
+      status: "unreviewed",
     };
 
+    console.log("Report Data:", data);
     const reportsCollection = collection(firestore, "reports");
     await addDoc(reportsCollection, reportData);
 
     console.log("Report created successfully!");
+    console.log(await fetchAllReports());
   } catch (error) {
     console.error("Error creating report:", error);
+    throw error;
+  }
+};
+
+export const fetchAllReports = async () => {
+  try {
+    const reportsCollection = collection(firestore, "reports");
+    const querySnapshot = await getDocs(reportsCollection);
+
+    const reports = [];
+    querySnapshot.forEach((doc) => {
+      reports.push({ id: doc.id, ...doc.data() });
+    });
+
+    return reports;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
     throw error;
   }
 };

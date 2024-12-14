@@ -17,10 +17,10 @@ import { icons } from "../constants";
 import { loginUser } from "../backend/utils";
 // import { images } from "../constants";
 // import { getCurrentUser, signIn } from "../../lib/appwrite";
-// import { useGlobalContext } from "../../context/GlobalProvider";
 
+import { useAuthContext } from "../context/AuthProvider";
 const SignIn = () => {
-  //   const { setUser, setIsLogged } = useGlobalContext();
+  const { setUser, setIsLogged } = useAuthContext();
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -35,7 +35,9 @@ const SignIn = () => {
         return;
       }
       const response = await loginUser(form);
-
+      // console.log("login response", response);
+      setUser(response);
+      setIsLogged(true);
       setSubmitting(true);
       Alert.alert("Success", "Successfully logged in");
       router.replace("/home");
