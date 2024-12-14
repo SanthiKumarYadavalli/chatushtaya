@@ -1,5 +1,6 @@
 import { Alert, Pressable, Text, View } from "react-native";
 import React from "react";
+import { router } from "expo-router";
 import { createReport } from "../backend/utils";
 import { useReportContext } from "../context/ReportProvider";
 
@@ -9,6 +10,7 @@ const NextButton = ({ disabledContidion, onPress, text = "Next" }) => {
   async function handlePress() {
     try {
       if (text == "Submit") {
+        router.push("loading");
         await createReport(formData);
       }
       onPress();
