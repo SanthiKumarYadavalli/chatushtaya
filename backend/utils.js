@@ -7,10 +7,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage"; // React N
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid"; // Install: npm install uuid
@@ -166,7 +168,6 @@ export const fetchReportsByUserId = async (id) => {
       reports.push({ id: doc.id, ...doc.data() });
     });
 
-    console.log("Fetched Reports:", reports);
     return reports;
   } catch (error) {
     console.error("Error fetching reports by userId:", error);
