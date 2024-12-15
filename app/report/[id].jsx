@@ -23,7 +23,7 @@ const SingleReport = () => {
         if (fetchedReport) {
           setReport(fetchedReport);
           // Check if the time difference between the current date and report's date is more than 7 days
-          const reportDate = new Date(fetchedReport.date?.seconds * 1000);
+          const reportDate = new Date(fetchedReport.createdAt?.seconds * 1000);
           const currentDate = new Date();
           const diffTime = Math.abs(currentDate - reportDate);
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert time difference to days

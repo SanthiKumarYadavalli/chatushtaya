@@ -58,7 +58,7 @@ export default function ReportsScreen() {
   // If no report is selected, show the list of reports
   if (!selectedReport) {
     const sortedReports = reports.sort(
-      (a, b) => new Date(b.date) - new Date(a.date)
+      (a, b) => new Date(b.createdAt?.seconds * 1000) - new Date(a.createdAt?.seconds * 1000)
     );
 
     return (
@@ -81,7 +81,7 @@ export default function ReportsScreen() {
                 >
                   <View className="bg-white p-4 rounded-lg mb-4 shadow-lg border border-gray-300">
                     <Text className="text-xl font-semibold text-gray-800">
-                      {`Report ${index + 1}`}
+                      {`Report ${sortedReports.length-index}`}
                     </Text>
                     <Text className="text-md font-medium text-gray-700">
                       {item.types.join(", ")}
