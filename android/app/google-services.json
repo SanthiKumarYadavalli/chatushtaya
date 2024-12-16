@@ -9,10 +9,15 @@
       "client_info": {
         "mobilesdk_app_id": "1:818680022816:android:f0651bb143e8f702993945",
         "android_client_info": {
-          "package_name": "com.chatushtaya"
+          "package_name": "com.anonymous.pulp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "818680022816-n332nj6e9skv3e5h9hobtsm1vnugs5p5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD8jVYTFaAGFe0aXJwdjBOq1gri-5tJ68s"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "818680022816-n332nj6e9skv3e5h9hobtsm1vnugs5p5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
