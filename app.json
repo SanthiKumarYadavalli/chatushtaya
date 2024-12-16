@@ -17,7 +17,8 @@
         "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.pulp"
+      "package": "com.anonymous.pulp",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
