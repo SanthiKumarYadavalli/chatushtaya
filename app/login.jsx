@@ -26,8 +26,8 @@ const SignIn = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  if(loading){
-    return <LoadingScreen />
+  if (loading) {
+    return <LoadingScreen message="Wait a Moment..." />;
   }
 
   const submit = async () => {
@@ -46,7 +46,7 @@ const SignIn = () => {
       setSubmitting(false);
     } catch (e) {
       Toast.error("Error logging in", e.message);
-    }finally{
+    } finally {
       setLoading(false);
     }
   };

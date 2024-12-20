@@ -120,7 +120,6 @@ const upload = async (uri, type) => {
     if (!uploadResponse.ok) {
       throw new Error(result.error?.message || `Failed to upload ${type}`);
     }
-
     return result.secure_url;
   } catch (error) {
     console.error(`Error uploading ${type}:`, error);
@@ -143,7 +142,7 @@ export const createReport = async (data) => {
       ...data,
       evidence: evidenceUrls,
       status: "unreviewed",
-      createdAt:new Date(),
+      createdAt: new Date(),
     };
 
     console.log("Report Data:", data);
@@ -175,21 +174,21 @@ export const fetchReportsByUserId = async (id) => {
   }
 };
 
-export const fetchSuperReports = async()=>{
-  try{
+export const fetchSuperReports = async () => {
+  try {
     const reportsRef = collection(firestore, "reports");
-    const q = query(reportsRef, where("isSuperReport","==",true));
+    const q = query(reportsRef, where("isSuperReport", "==", true));
     const querySnapshot = await getDocs(q);
 
-    const reports =[];
-    querySnapshot.forEach((doc)=>{
-      reports.push({id:doc.id, ...doc.data()});
+    const reports = [];
+    querySnapshot.forEach((doc) => {
+      reports.push({ id: doc.id, ...doc.data() });
     });
-  }catch(error){
-    console.error("Error Fetching reports by userId",error);
+  } catch (error) {
+    console.error("Error Fetching reports by userId", error);
     throw error;
   }
-}
+};
 
 export const fetchReportsByQuery = async (filters) => {
   try {

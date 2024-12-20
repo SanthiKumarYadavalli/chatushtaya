@@ -1,8 +1,10 @@
 import React from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
+import { useAuthContext } from "../context/AuthProvider";
 
 export default function Message(props) {
   const date = new Date();
+  const { user } = useAuthContext();
   return (
     <View style={styles.message}>
       <View
@@ -17,7 +19,7 @@ export default function Message(props) {
             source={require("../assets//icons/user.png")}
             style={styles.icon}
           />
-          <Text className="font-pregular">Username</Text>
+          <Text className="font-pregular">{user.username}</Text>
         </View>
         <Text style={{ fontSize: 10 }} className="font-plight">
           {date.getHours()}:{date.getMinutes()}

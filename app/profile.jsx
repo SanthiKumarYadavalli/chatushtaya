@@ -79,7 +79,9 @@ export default function profile() {
               Reported Incidents
             </Text>
             <TouchableOpacity
-              onPress={() => {router.replace("reports")}}
+              onPress={() => {
+                router.push("/reports");
+              }}
               className="bg-white p-4 rounded-lg shadow-md font-pregular mb-4"
             >
               <Text className="text-gray-700 text-center">
@@ -92,7 +94,7 @@ export default function profile() {
           <View className="mb-6 w-full">
             <Text className="text-lg font-pregular mb-2">Settings</Text>
             <TouchableOpacity
-              onPress={()=>{}}
+              onPress={() => {}}
               className="flex-row items-center bg-white p-4 rounded-lg shadow-md mb-4"
             >
               <FontAwesome5 name="cogs" size={20} color="gray" />

@@ -73,6 +73,7 @@ export default function ChatScreen() {
                 onChangeText={(text) => setInputText(text)}
                 selectionColor={"#323232"}
                 className="font-plight"
+                multiline
               />
               <TouchableOpacity onPress={SearchInput}>
                 <AntDesign name="arrowright" size={28} color="black" />
@@ -105,12 +106,13 @@ const styles = StyleSheet.create({
   searchBar: {
     width: "100%",
     position: "absolute",
-    bottom: 0,
+    bottom: 5,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 16,
+    marginTop: 10,
     gap: 8,
   },
   input: {

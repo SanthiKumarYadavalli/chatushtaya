@@ -47,9 +47,9 @@ const Home = () => {
         {/* Main Content */}
         <View className="flex-1 items-center justify-center mt-5">
           {/* Center Content */}
-          <View className="mt-8 h-1/2">
+          <View className="mt-8 h-1/2 ml-3">
             <Image
-              source={require("../assets/images/women.png")} // Replace with your PNG
+              source={require("../assets/images/women.png")}
               className="w-52 h-52 mt-12"
               resizeMode="cover"
             />
@@ -67,7 +67,7 @@ const Home = () => {
             <View className="flex-1 mt-2 w-full items-center justify-center">
               {/* Report Button (Left) */}
               <View className="absolute left-3 top-5 items-center gap-2">
-                <Link href="/ai" asChild>
+                <Link href="/contact" asChild>
                   <TouchableOpacity className="w-32 h-32 bg-white rounded-full justify-center items-center shadow-2xl border border-[#f72c5ba6]">
                     <Image
                       source={require("../assets/images/help.jpg")} // Replace with your image

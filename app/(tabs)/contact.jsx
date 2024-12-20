@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import LoadingScreen from "../(form)/loading";
 import {
   View,
@@ -36,13 +36,13 @@ export default function contact() {
         break;
     }
   };
-  if(loading){
-    return <LoadingScreen />
+  if (loading) {
+    return <LoadingScreen message="Wait a Moment..." />;
   }
 
   return (
     <SafeAreaView className="h-full">
-      <ScrollView className="px-4 py-6 mt-12 mb-32">
+      <ScrollView className="px-4 py-6 mt-12">
         <Text className="text-3xl text-center font-psemibold py-3 mb-7">
           Contact Authorities
         </Text>

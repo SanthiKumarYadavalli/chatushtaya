@@ -35,7 +35,7 @@ export default function ReportsScreen() {
   }, []);
 
   if (loading) {
-    return <LoadingScreen />;
+    return <LoadingScreen message="Wait a Moment..." />;
   }
 
   if (error) {
@@ -58,12 +58,14 @@ export default function ReportsScreen() {
   // If no report is selected, show the list of reports
   if (!selectedReport) {
     const sortedReports = reports.sort(
-      (a, b) => new Date(b.createdAt?.seconds * 1000) - new Date(a.createdAt?.seconds * 1000)
+      (a, b) =>
+        new Date(b.createdAt?.seconds * 1000) -
+        new Date(a.createdAt?.seconds * 1000)
     );
 
     return (
       <SafeAreaView className="h-full">
-        <ScrollView className="px-4 py-6 mt-12 mb-32">
+        <ScrollView className="px-4 py-6 mt-12">
           <Text className="text-3xl text-center font-psemibold py-3 mb-7">
             Reports History
           </Text>
@@ -81,7 +83,7 @@ export default function ReportsScreen() {
                 >
                   <View className="bg-white p-4 rounded-lg mb-4 shadow-lg border border-gray-300">
                     <Text className="text-xl font-semibold text-gray-800">
-                      {`Report ${sortedReports.length-index}`}
+                      {`Report ${sortedReports.length - index}`}
                     </Text>
                     <Text className="text-md font-medium text-gray-700">
                       {item.types.join(", ")}

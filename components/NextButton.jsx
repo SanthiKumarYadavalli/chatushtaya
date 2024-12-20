@@ -12,7 +12,11 @@ const NextButton = ({ disabledContidion, onPress, text = "Next" }) => {
     try {
       if (text == "Submit") {
         router.push("loading");
-        await createReport({ ...formData, userId: user.id });
+        await createReport({
+          ...formData,
+          userId: user.id,
+          username: user.username,
+        });
       }
       onPress();
     } catch (e) {

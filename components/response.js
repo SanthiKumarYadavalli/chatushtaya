@@ -25,25 +25,34 @@ const irrelevantKeywords = [
   "help me with homework",
 ];
 
+const PROMPT =
+  'If user question is related to any of this "generate code", "write program", "help with homework","teach programming","math problem","generate solution","technical help","AI models","science query","technology","write some code", "write code","help me with homework", give me output "yes" or else "no" only oneword, the user question is: ';
+
 export default function Response(props) {
   const [generatedText, setGeneratedText] = useState("");
-  const [userPrompt, setUserPrompt] = useState(props.prompt);  // capture user prompt
-  
-  // Function to check if prompt is relevant or not
-  const isRelevantPrompt = (prompt) => {
-    // Check if any of the irrelevant keywords are present in the prompt
-    return !irrelevantKeywords.some((keyword) => prompt.toLowerCase().includes(keyword));
+  const [userPrompt, setUserPrompt] = useState(props.prompt); // capture user prompt
+
+  const isRelevantPrompt = async (prompt) => {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const result = await model.generateContent(PROMPT + prompt);
+    const response = await result.response;
+    const text = await response.text();
+    console.log(text, text == "yes");
+    return text;
   };
 
   useEffect(() => {
     const fetchData = async () => {
       // Check if the user's prompt is relevant
-      if (!isRelevantPrompt(userPrompt)) {
+      if ((await isRelevantPrompt(userPrompt)).trim() === "yes") {
         // If the prompt is irrelevant, show a generic message
-        setGeneratedText("Sorry, I can't help with that. I'm here to provide emotional support. How are you feeling?");
+        console.log("I am working");
+        setGeneratedText(
+          "Sorry, I can't help with that. I'm here to provide emotional support. How are you feeling?"
+        );
         return;
       }
-      
+
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
       const prompt = userPrompt;
       const result = await model.generateContent(prompt);
@@ -51,9 +60,9 @@ export default function Response(props) {
       const text = await response.text();
       setGeneratedText(text);
     };
-    
+
     fetchData();
-  }, [userPrompt]);  // Re-run effect whenever the userPrompt changes
+  }, [userPrompt]); // Re-run effect whenever the userPrompt changes
 
   return (
     <View style={styles.response}>
@@ -70,7 +79,7 @@ export default function Response(props) {
             style={styles.icon}
           />
           <Text style={{ fontWeight: 600 }} className="font-pregular">
-            Gemini
+            Naira
           </Text>
         </View>
         <Text style={{ fontSize: 10, fontWeight: "600" }}>
