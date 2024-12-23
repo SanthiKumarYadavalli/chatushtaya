@@ -8,10 +8,11 @@ import { useAuthContext } from "../context/AuthProvider";
 const NextButton = ({ disabledContidion, onPress, text = "Next" }) => {
   const { formData } = useReportContext();
   const { user } = useAuthContext();
+
   async function handlePress() {
     try {
       if (text == "Submit") {
-        router.push("loading");
+        router.push("loading")
         await createReport({
           ...formData,
           userId: user.id,
