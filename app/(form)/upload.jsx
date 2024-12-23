@@ -1,10 +1,11 @@
 import React from "react";
 import { router } from "expo-router";
-import { Text, View, TouchableOpacity } from "react-native";
-import * as ImagePicker from "expo-image-picker";
+import { Text, View, TouchableOpacity, Image } from "react-native";
 import FormScreen from "../../components/FormScreen";
 import { useReportContext } from "../../context/ReportProvider";
 import * as DocumentPicker from "expo-document-picker";
+import { Plus } from "lucide-react-native";
+
 
 export default function UploadForm() {
   const { formData, changeValue } = useReportContext();
@@ -13,6 +14,7 @@ export default function UploadForm() {
     const result = await DocumentPicker.getDocumentAsync({
       type: "*/*",
       copyToCacheDirectory: true,
+      multiple: true,
     });
     if (!result.canceled) {
       changeValue("evidence", result);
@@ -25,11 +27,18 @@ export default function UploadForm() {
       disabledContidion={false}
       buttonOnPress={() => router.push("details")}
     >
-      <View className="w-full border border-mypink rounded-2xl">
-        <TouchableOpacity onPress={pickImage} className="py-5 px-5">
-          <Text className="text-center">Upload media</Text>
-        </TouchableOpacity>
-      </View>
+      <Text className="mb-10">
+        Supported Files: images, video, audio
+      </Text>
+      <TouchableOpacity onPress={pickImage} className="w-[80%] h-1/3 border border-mypink rounded-2xl items-center justify-center">
+        <Plus color="#79D1C3" size={69} strokeWidth={1} />
+      </TouchableOpacity>
+
+      {formData.evidence.assets.length > 0 && (
+        <View className="mt-7">
+          <Text className="text-green-600">{formData.evidence.assets.length} files added!</Text>
+        </View>
+      )}
     </FormScreen>
   );
 }

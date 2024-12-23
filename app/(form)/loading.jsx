@@ -7,7 +7,7 @@ const LoadingScreen = ({ message }) => {
     <FormContainer>
       <View className="flex items-center justify-center h-full gap-2">
         <ActivityIndicator size="large" color="#6892D5" />
-        <Text className="text-xl text-gray-800 font-pmedium">{message}</Text>
+        <Text className="text-xl text-gray-800 font-pmedium">{message ? message : "Wait a moment"}</Text>
       </View>
     </FormContainer>
   );

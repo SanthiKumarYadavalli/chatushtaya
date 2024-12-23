@@ -20,14 +20,14 @@ export default function Details() {
         style={{ height: "90%" }}
       >
         <TextInput
-          className="px-6 py-4 mb-3 w-full rounded-lg text-lg text-pregular bg-white border border-gray-300 text-gray-800"
+          className="px-6 py-4 mb-3 w-full h-24 rounded-lg text-lg text-pregular bg-white border border-gray-300 text-gray-800"
           placeholder="Enter Harasser's Details"
           multiline
           numberOfLines={10}
           onChangeText={(text) => changeValue("harasserDetails", text)}
         />
         <TextInput
-          className="px-6 py-4 mb-3 w-full rounded-lg text-lg text-pregular bg-white border border-gray-300 text-gray-800"
+          className="px-6 py-4 mb-3 w-full h-24 rounded-lg text-lg text-pregular bg-white border border-gray-300 text-gray-800"
           placeholder="Enter Additional Information"
           multiline
           numberOfLines={10}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { router } from "expo-router";
-import { Text, TextInput, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
+import { TextInput } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import FormScreen from "../../components/FormScreen";
 import { useReportContext } from "../../context/ReportProvider";
@@ -28,10 +29,14 @@ export default function LocationDt() {
       buttonOnPress={() => router.push("upload")}
     >
       <View className="mb-4 w-full">
-        <Text className="font-pregular text-gray-800 mb-2">Location</Text>
+        {/* <Text className="font-pregular text-gray-800 mb-2">Location</Text> */}
         <TextInput
-          className="px-6 py-4 mb-3 rounded-lg text-lg bg-white border border-gray-300 text-gray-800 "
-          placeholder="Enter location"
+          // className="px-6 py-4 mb-3 rounded-lg text-lg bg-white border border-gray-300 text-gray-800 "
+          label="Place"
+          mode="outlined"
+          placeholder="Enter the Place"
+          style={{ backgroundColor: "white", marginVertical: 30, height: 60}}
+          activeOutlineColor="#6892D5"
           value={formData.location}
           onChangeText={(text) => changeValue("location", text)}
         />
