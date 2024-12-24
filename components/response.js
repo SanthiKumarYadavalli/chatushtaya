@@ -1,29 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import Markdown from "react-native-markdown-display";
+import { getResponse } from "../utils/gemini";
 
 // Get current date and time for display
 const date = new Date();
-const API_KEY = "AIzaSyARK_lneNnX5svCRRpjqG9pHD3YmRvP90s";
-const genAI = new GoogleGenerativeAI(API_KEY);
-
-// Define list of irrelevant keywords/phrases
-const irrelevantKeywords = [
-  "generate code",
-  "write program",
-  "help with homework",
-  "teach programming",
-  "math problem",
-  "generate solution",
-  "technical help",
-  "AI models",
-  "science query",
-  "technology",
-  "write some code",
-  "write code",
-  "help me with homework",
-];
 
 const PROMPT =
   'If user question is related to any of this "generate code", "write program", "help with homework","teach programming","math problem","generate solution","technical help","AI models","science query","technology","write some code", "write code","help me with homework", give me output "yes" or else "no" only oneword, the user question is: ';
@@ -33,10 +14,7 @@ export default function Response(props) {
   const [userPrompt, setUserPrompt] = useState(props.prompt); // capture user prompt
 
   const isRelevantPrompt = async (prompt) => {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    const result = await model.generateContent(PROMPT + prompt);
-    const response = await result.response;
-    const text = await response.text();
+    const text = await getResponse(PROMPT + prompt);
     console.log(text, text == "yes");
     return text;
   };
@@ -53,11 +31,8 @@ export default function Response(props) {
         return;
       }
 
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
       const prompt = userPrompt;
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = await response.text();
+      const text = await getResponse(prompt);
       setGeneratedText(text);
     };
 

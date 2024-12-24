@@ -18,6 +18,7 @@ import {
 import { v4 as uuidv4 } from "uuid"; // Install: npm install uuid
 import { firestore, storage } from "./firebase";
 import * as FileSystem from "expo-file-system";
+import { getSeverity } from "../utils/get-severity";
 
 const auth = getAuth();
 
@@ -143,6 +144,7 @@ export const createReport = async (data) => {
       evidence: evidenceUrls,
       status: "unreviewed",
       createdAt: new Date(),
+      severity: await getSeverity(data.types, data.additionalInfo)
     };
 
     console.log("Report Data:", data);

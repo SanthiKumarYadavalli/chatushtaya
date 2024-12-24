@@ -10,6 +10,8 @@ export const ReportProvider = ({ children }) => {
         location: "",
         evidence: {assets: []},
         isAnonymous: false,
+        harasserDetails: "",
+        additionalInfo: ""
     });
 
     const changeValue = (key, value) => {
