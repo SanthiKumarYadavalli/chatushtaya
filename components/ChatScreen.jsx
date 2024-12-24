@@ -17,6 +17,7 @@ import { StatusBar } from "expo-status-bar";
 import Response from "./response";
 import Message from "./message";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { SendHorizonal } from "lucide-react-native";
 
 export default function ChatScreen() {
   const [inputText, setInputText] = useState("");
@@ -46,23 +47,32 @@ export default function ChatScreen() {
                 source={require("../assets/icons/robot.png")}
                 style={styles.icon}
               />
-              <Text className="text-3xl font-pmedium ">Naira</Text>
+              <Text className="text-3xl font-pregular ">Naira</Text>
             </View>
 
             {/* Content */}
-            <FlatList
-              style={{ paddingHorizontal: 16, marginBottom: 80 }}
-              data={listData}
-              renderItem={({ item }) => (
-                <View>
-                  <Message message={item} />
-                  <Response prompt={item} />
+            {(listData.length === 0)
+              ? (
+                <View className="justify-center items-center w-full h-[80%]">
+                  <Text className="text-center text-lg font-pregular">Hi 👋</Text>
+                  <Text className="text-center text-lg font-pregular">How are you feeling today?</Text>
                 </View>
-              )}
-              keyExtractor={(item, index) => index.toString()}
-              keyboardShouldPersistTaps="handled" // Allow taps on the list even when the keyboard is open
-              contentContainerStyle={{ paddingBottom: 100 }} // Add padding to the bottom
-            />
+              ) : (
+                  <FlatList
+                  style={{ paddingHorizontal: 16, marginBottom: 80 }}
+                  data={listData}
+                  renderItem={({ item }) => (
+                    <View>
+                      <Message message={item} />
+                      <Response prompt={item} />
+                    </View>
+                  )}
+                  keyExtractor={(item, index) => index.toString()}
+                  keyboardShouldPersistTaps="handled" // Allow taps on the list even when the keyboard is open
+                  contentContainerStyle={{ paddingBottom: 100 }} // Add padding to the bottom
+                />
+              )
+            }
 
             {/* Search-Bar */}
             <View style={styles.searchBar}>
@@ -75,8 +85,8 @@ export default function ChatScreen() {
                 className="font-plight"
                 multiline
               />
-              <TouchableOpacity onPress={SearchInput}>
-                <AntDesign name="arrowright" size={28} color="black" />
+              <TouchableOpacity onPress={SearchInput} className="mx-3">
+                <SendHorizonal size={24} color="#323232" />
               </TouchableOpacity>
             </View>
           </View>
@@ -102,6 +112,7 @@ const styles = StyleSheet.create({
   icon: {
     width: 32,
     height: 32,
+    borderRadius: 16,
   },
   searchBar: {
     width: "100%",

@@ -3,14 +3,14 @@ import { Tabs } from "expo-router";
 import React from "react";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { MessageCircleHeart } from "lucide-react-native";
 
 const icons = {
   Contacts: (props) => (
     <AntDesign name="contacts" size={24} color={props.color} />
   ),
-  Ai: (props) => (
-    <MaterialCommunityIcons
-      name="robot-excited-outline"
+  Naira: (props) => (
+    <MessageCircleHeart
       size={24}
       color={props.color}
     />
@@ -73,7 +73,7 @@ const TabLayout = () => {
             title: "Ai",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <TabIcon color={color} focused={focused} name={"Ai"} />
+              <TabIcon color={color} focused={focused} name={"Naira"} />
             ),
           }}
         />{" "}
