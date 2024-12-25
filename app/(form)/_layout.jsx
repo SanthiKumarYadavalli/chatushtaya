@@ -10,6 +10,7 @@ const RootLayout = () => {
             <Stack.Screen name="locationdt" options={{ headerShown: false }} />
             <Stack.Screen name="upload" options={{ headerShown: false }} />
             <Stack.Screen name="details" options={{ headerShown: false }} />
+            <Stack.Screen name="anonymous" options={{ headerShown: false }} />
             <Stack.Screen name="success" options={{ headerShown: false }} />
             <Stack.Screen name="loading" options={{ headerShown: false }} />
         </Stack>

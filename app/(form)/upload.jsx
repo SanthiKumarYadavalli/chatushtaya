@@ -8,7 +8,7 @@ import { Plus } from "lucide-react-native";
 
 
 export default function UploadForm() {
-  const { formData, changeValue } = useReportContext();
+  const { formData, changeValue, clearValue } = useReportContext();
 
   const pickImage = async () => {
     const result = await DocumentPicker.getDocumentAsync({
@@ -26,6 +26,11 @@ export default function UploadForm() {
       heading="Upload Evidence"
       disabledContidion={false}
       buttonOnPress={() => router.push("details")}
+      onSkip={() => {
+        clearValue("evidence");
+        router.push("details");
+      }}
+      skipButton={true}
     >
       <Text className="mb-10">
         Supported Files: images, video, audio

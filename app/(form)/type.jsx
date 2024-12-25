@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, Pressable } from "react-native";
 import { router } from "expo-router";
 import FormScreen from "../../components/FormScreen";
 import { useReportContext } from "../../context/ReportProvider";
 
 export default function ChooseTypeScreen() {
-  const { formData, changeValue } = useReportContext();
+  const { formData, changeValue, resetData } = useReportContext();
+
+  useEffect(() => {
+    resetData();
+  }, []);
+
   const types = [
     "Verbal Abuse",
     "Sexual Harassment",
