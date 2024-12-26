@@ -19,12 +19,11 @@ Clearly answer to the person's question, if they are asking a question.
 
 Here's someone's message to you:
 `;
-
+const date = new Date();
 export default function Response(props) {
   const [generatedText, setGeneratedText] = useState("");
   const [userPrompt, setUserPrompt] = useState(props.prompt); // capture user prompt
   const [isTyping, setIsTyping] = useState(false);
-  const date = new Date();
 
   // const isRelevantPrompt = async (prompt) => {
   //   const text = await getResponse(PROMPT + prompt);
