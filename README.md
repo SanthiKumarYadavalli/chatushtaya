@@ -159,7 +159,7 @@ These are the core features that make **EmpowerSafe** an essential tool for buil
 ---
 
 ## Admin Portal Link
-- [Admin Page](#)
+- [Admin Page](https://hey-krishna.vercel.app/admin/dashboard)
 
 ---
 
