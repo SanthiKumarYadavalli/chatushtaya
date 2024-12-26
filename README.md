@@ -8,7 +8,7 @@ EmpowerSafe is a mobile and web-based platform designed to address harassment fa
 ## Tech Stack Used
 
 - **Frontend (Mobile App):** React Native (for Android)  
-- **Frontend (Admin Portal):** React.js with Vite (for web)  
+- **Frontend (Admin Portal):** Next.js (for web)  
 - **Backend & Database:** Firebase (Cloud services, Realtime Database, Authentication, and Functions)
 
 ---
@@ -34,10 +34,10 @@ EmpowerSafe is a mobile and web-based platform designed to address harassment fa
    ```
 3. Run the app:
    ```bash
-   npx react-native run-android
+   npm start
    ```
 
-#### Admin Portal (React.js + Vite):
+#### Admin Portal (Next.js):
 1. Clone the repository:
    ```bash
    git clone https://github.com/SanthiKumarYadavalli/chatushtaya-admin
@@ -146,17 +146,6 @@ These are the core features that make **EmpowerSafe** an essential tool for buil
 
 ---
 
-
-## Team Members
-
-| Name         | Role               | Contact              | College ID           |
-|--------------|--------------------|----------------------|----------------------|
-| Sky          | Mobile, Admin,Backend | santhikumaryadavalli23@gmail.com   | R200148 |
-| Phani        | Mobile, Admin, Documentation | phanivutla2004@gmail.com | R200026 |
-| Hemanth      | Mobile , Backend  | hemanth789@example.com | R200026 |
-| Sai Jayanth  | Mobile, Backend   | sai101@example.com   | R200026 |
-
----
 
 ## Admin Portal Link
 - [Admin Page](https://hey-krishna.vercel.app/admin/dashboard)
