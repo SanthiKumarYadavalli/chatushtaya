@@ -36,7 +36,7 @@ const SignUp = () => {
       <View className="flex-1 mt-5 px-4">
         <View className="flex justify-center h-full">
           <Text className="text-2xl font-semibold text-center text-gray-800">
-            Sign Up to Chatushtaya
+            Sign Up 
           </Text>
 
           <View className={`space-y-2 mt-7`}>

@@ -1,6 +1,6 @@
 import React from "react";
 import { router } from "expo-router";
-import { Text, View, TouchableOpacity, Image } from "react-native";
+import { Text, View, TouchableOpacity, Image, Pressable } from "react-native";
 import FormScreen from "../../components/FormScreen";
 import { useReportContext } from "../../context/ReportProvider";
 import * as DocumentPicker from "expo-document-picker";
@@ -35,9 +35,15 @@ export default function UploadForm() {
       <Text className="mb-10">
         Supported Files: images, video, audio
       </Text>
-      <TouchableOpacity onPress={pickImage} className="w-[80%] h-1/3 border border-mypink rounded-2xl items-center justify-center">
-        <Plus color="#79D1C3" size={69} strokeWidth={1} />
-      </TouchableOpacity>
+      <View className="w-[80%] h-1/3 border border-mypink rounded-2xl items-center justify-center">
+        <Pressable
+          className="w-full h-full rounded-2xl items-center justify-center"
+          android_ripple={{ color: "#eee" }}
+          onPress={pickImage}
+        >
+          <Plus color="#79D1C3" size={69} strokeWidth={1} />
+        </Pressable>
+      </View>
 
       {formData.evidence.assets.length > 0 && (
         <View className="mt-7">

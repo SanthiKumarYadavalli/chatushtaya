@@ -16,6 +16,7 @@ import {
 import { icons } from "../constants";
 
 import { useAuthContext } from "../context/AuthProvider";
+import { StatusBar } from "expo-status-bar";
 const SignIn = () => {
   const { setUser, setIsLogged } = useAuthContext();
   const [loading, setLoading] = useState(false);
@@ -53,6 +54,7 @@ const SignIn = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white px-4">
+      <StatusBar style="black" />
       <View className="flex items-center">
         <Image
           source={require("../assets/images/signin.png")} // Image for login
@@ -63,7 +65,7 @@ const SignIn = () => {
       <View className="flex-1  position-absolute">
         <View className="flex justify-center h-full">
           <Text className="text-2xl font-semibold text-center text-gray-800">
-            Log in to Chatushtaya
+            Log in 
           </Text>
           <View className="space-y-2 mt-7">
             <Text className="text-base font-medium">Email</Text>

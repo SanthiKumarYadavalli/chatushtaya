@@ -4,6 +4,7 @@ import { router } from "expo-router";
 import { createReport } from "../backend/utils";
 import { useReportContext } from "../context/ReportProvider";
 import { useAuthContext } from "../context/AuthProvider";
+import { Button } from "react-native-paper";
 
 const NextButton = ({ disabledContidion, onPress, text = "Next" }) => {
   const { formData } = useReportContext();
@@ -26,9 +27,10 @@ const NextButton = ({ disabledContidion, onPress, text = "Next" }) => {
   }
 
   return (
-    <View className="">
+    <View className="w-full">
       <Pressable
-        className={`py-4 rounded-xl w-full bg-mylavender`}
+        android_ripple={{color: "#78A2E5"}}
+        className={`py-4 bg-mylavender rounded-xl`}
         onPress={handlePress}
         disabled={disabledContidion}
         style={{ opacity: disabledContidion ? 0.5 : 1 }}

@@ -35,7 +35,7 @@ export default function MyTabs() {
         name="ai"
         component={Ai}
         options={{
-          tabBarLabel: "Ai",
+          tabBarLabel: "Naira",
           tabBarIcon: ({ color }) => (
             <MessageCircleHeart size={24} color={color} />
           ),

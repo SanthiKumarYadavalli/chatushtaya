@@ -4,9 +4,12 @@ import React from "react";
 import { View, Text, StyleSheet, Button, ImageBackground ,TouchableOpacity} from "react-native";
 import Swiper from "react-native-swiper";
 import { router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 // import {index1} from "../constants/images"
 export default function Landing() {
   return (
+    <>
+    <StatusBar hidden={true} />
     <Swiper
       loop={false}
       showsPagination={true}
@@ -51,7 +54,7 @@ export default function Landing() {
           <View className="absolute bottom-20 w-full flex items-center">
     <TouchableOpacity
       className="bg-white border-2 border-black text-black flex items-center justify-center w-[200px] h-[50px] rounded-xl"
-      onPress={() => router.push("login")}
+      onPress={() => router.replace("login")}
     >
       <Text className="text-black text-3xl font-medium">
         Get started →
@@ -61,6 +64,7 @@ export default function Landing() {
         </ImageBackground>
       </View>
     </Swiper>
+    </>
   );
 }
 

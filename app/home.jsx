@@ -7,16 +7,17 @@ import {
   Pressable,
   Button,
 } from "react-native";
-import { Link, Redirect, router } from "expo-router";
+import { Link, Redirect, router, useNavigation } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuthContext } from "../context/AuthProvider";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Login from "./login";
 import { Toast } from "toastify-react-native";
-import { AlertTriangle, CircleAlert, Feather, HandHeart, HeartHandshake, NotebookPen, PenBox, PenLine, PhoneCall, Plus, Send } from "lucide-react-native";
+import { Feather, HandHeart, PhoneCall } from "lucide-react-native";
 
 const Home = () => {
+  const navigation = useNavigation();
   const dialEmergency = () => {
     Linking.openURL("tel:100");
   };
@@ -68,16 +69,20 @@ const Home = () => {
             <View className="flex-1 mt-2 w-full items-center justify-center">
               {/* Report Button (Left) */}
               <View className="absolute left-3 top-5 items-center gap-2">
-                <Link href="/contact" asChild>
-                  <TouchableOpacity className="w-32 h-32 bg-white rounded-full justify-center items-center shadow-2xl border border-[#f72c5ba6]">
+                <View className="bg-white rounded-full overflow-hidden justify-center items-center shadow-2xl border border-[#f72c5ba6]">
+                  <Pressable 
+                    android_ripple={{ color: "#eee"}}
+                    className="w-32 h-32 rounded-full items-center justify-center"
+                    onPress={() => navigation.navigate("(tabs)")}
+                  >
                     {/* <Image
                       source={require("../assets/images/help.jpg")} // Replace with your image
                       className="w-full h-full  rounded-full"
                       resizeMode="cover"
                     /> */}
                     <HandHeart color="#f72c5b" size={50} strokeWidth={1}/>
-                  </TouchableOpacity>
-                </Link>
+                  </Pressable>
+                </View>
                 <Text className="text-lg font-pregular text-gray-800">
                   Help & Support
                 </Text>
@@ -85,11 +90,17 @@ const Home = () => {
 
               {/* Help Button (Right) */}
               <View className="absolute right-3 bottom-10 items-center py-5 gap-2">
-                <Link href="/(form)/type" asChild>
-                  <TouchableOpacity className="w-48 h-48 bg-white rounded-full justify-center items-center shadow-2xl border border-[#1766e4]">
-                    <Feather color="#1766e4" size={50} strokeWidth={1}/>
-                  </TouchableOpacity>
-                </Link>
+                {/* <Link href="/(form)/type" asChild> */}
+                  <View className="bg-white rounded-full justify-center overflow-hidden items-center shadow-2xl border border-[#1766e4]">
+                    <Pressable
+                      android_ripple={{color: "#eee"}}
+                      onPress={() => navigation.navigate("(form)")}
+                      className="w-48 h-48 rounded-full items-center justify-center"
+                    >
+                      <Feather color="#1766e4" size={50} strokeWidth={1}/>
+                    </Pressable>
+                  </View>
+                {/* </Link> */}
                 <Text className="text-lg font-pregular text-gray-800">
                   Report
                 </Text>
