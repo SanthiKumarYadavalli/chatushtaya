@@ -18,6 +18,7 @@ import Response from "./response";
 import Message from "./message";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { SendHorizonal } from "lucide-react-native";
+import { AutoScrollFlatList } from "react-native-autoscroll-flatlist";
 
 export default function ChatScreen() {
   const [inputText, setInputText] = useState("");
@@ -51,28 +52,30 @@ export default function ChatScreen() {
             </View>
 
             {/* Content */}
-            {(listData.length === 0)
-              ? (
-                <View className="justify-center items-center w-full h-[80%]">
-                  <Text className="text-center text-lg font-pregular">Hi 👋</Text>
-                  <Text className="text-center text-lg font-pregular">How are you feeling today?</Text>
-                </View>
-              ) : (
-                  <FlatList
-                  style={{ paddingHorizontal: 16, marginBottom: 80 }}
-                  data={listData}
-                  renderItem={({ item }) => (
-                    <View>
-                      <Message message={item} />
-                      <Response prompt={item} />
-                    </View>
-                  )}
-                  keyExtractor={(item, index) => index.toString()}
-                  keyboardShouldPersistTaps="handled" // Allow taps on the list even when the keyboard is open
-                  contentContainerStyle={{ paddingBottom: 100 }} // Add padding to the bottom
-                />
-              )
-            }
+            {listData.length === 0 ? (
+              <View className="justify-center items-center w-full h-[80%]">
+                <Text className="text-center text-lg font-pregular">Hi 👋</Text>
+                <Text className="text-center text-lg font-pregular">
+                  How are you feeling today?
+                </Text>
+              </View>
+            ) : (
+              <AutoScrollFlatList
+                indicatorComponent={<></>}
+                style={{ paddingHorizontal: 16, marginBottom: 80 }}
+                data={listData}
+                threshold={20}
+                renderItem={({ item }) => (
+                  <View>
+                    <Message message={item} />
+                    <Response prompt={item} />
+                  </View>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+                keyboardShouldPersistTaps="handled" // Allow taps on the list even when the keyboard is open
+                contentContainerStyle={{ paddingBottom: 100 }} // Add padding to the bottom
+              />
+            )}
 
             {/* Search-Bar */}
             <View style={styles.searchBar}>

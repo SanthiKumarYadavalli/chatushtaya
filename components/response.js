@@ -4,10 +4,9 @@ import Markdown from "react-native-markdown-display";
 import { getResponse } from "../utils/gemini";
 
 // Get current date and time for display
-const date = new Date();
 
 // const PROMPT =
-  // 'If user question is related to any of this "generate code", "write program", "help with homework","teach programming","math problem","generate solution","technical help","AI models","science query","technology","write some code", "write code","help me with homework", give me output "yes" or else "no" only oneword, the user question is: ';
+// 'If user question is related to any of this "generate code", "write program", "help with homework","teach programming","math problem","generate solution","technical help","AI models","science query","technology","write some code", "write code","help me with homework", give me output "yes" or else "no" only oneword, the user question is: ';
 
 const PROMPT = `
 Act as a real human (a genz kid named 'Naira' who is a best supporter and a friend)
@@ -25,6 +24,7 @@ export default function Response(props) {
   const [generatedText, setGeneratedText] = useState("");
   const [userPrompt, setUserPrompt] = useState(props.prompt); // capture user prompt
   const [isTyping, setIsTyping] = useState(false);
+  const date = new Date();
 
   // const isRelevantPrompt = async (prompt) => {
   //   const text = await getResponse(PROMPT + prompt);
@@ -75,7 +75,9 @@ export default function Response(props) {
         </Text>
       </View>
       {isTyping ? (
-        <Text style={{ fontStyle: "italic", color: "green" }}>Naira is typing...</Text>
+        <Text style={{ fontStyle: "italic", color: "green" }}>
+          Naira is typing...
+        </Text>
       ) : (
         <Markdown>{generatedText}</Markdown>
       )}

@@ -11,7 +11,7 @@ import {
 import { FontAwesome5 } from "@expo/vector-icons";
 import { fetchContacts } from "../../backend/utils";
 
-export default function contact() {
+export default function Contact() {
   const [loading, setLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
   useEffect(() => {

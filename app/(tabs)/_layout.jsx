@@ -1,95 +1,56 @@
-import { View, Text } from "react-native";
-import { Tabs } from "expo-router";
-import React from "react";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
+import Ai from "./ai";
+import Contact from "./contact";
+import ReportsScreen from "./reports";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { MessageCircleHeart } from "lucide-react-native";
 
-const icons = {
-  Contacts: (props) => (
-    <AntDesign name="contacts" size={24} color={props.color} />
-  ),
-  Naira: (props) => (
-    <MessageCircleHeart
-      size={24}
-      color={props.color}
-    />
-  ),
-  Reports: (props) => <AntDesign name="form" size={24} color={props.color} />,
-  default: (props) => (
-    <Feather name="question-mark" size={24} color={props.color} />
-  ),
-};
+const Tab = createMaterialBottomTabNavigator();
 
-const TabIcon = ({ color, name, focused }) => {
+export default function MyTabs() {
   return (
-    <>
-      <View className="items-center justify-center gap-1 w-16">
-        {icons[name]({ color })}
-        <Text
-          className={`${focused ? "font-psemibold" : "font-pregular"} text-xs`}
-          style={{ color }}
-        >
-          {name}
-        </Text>
-      </View>
-    </>
-  );
-};
-
-const TabLayout = () => {
-  return (
-    <>
-      <Tabs
-        screenOptions={{
-          tabBarHideOnKeyboard: true,
-          tabBarShowLabel: false,
-          tabBarActiveTintColor: "#f72c5b",
-          tabBarInactiveTintColor: "black",
-          tabBarStyle: {
-            height: 72,
-          },
-          tabBarItemStyle: {
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-          },
+    <Tab.Navigator
+      initialRouteName="contacts"
+      activeColor="#f72c5b"
+      barStyle={{ backgroundColor: "white" }}
+      theme={{ colors: { secondary: "black" } }}
+      tabBarOptions={{
+        keyboardHidesTabBar: true,
+      }}
+      screenOptions={{
+        tabBarHideOnKeyboard: true,
+      }}
+    >
+      <Tab.Screen
+        name="contacts"
+        component={Contact}
+        options={{
+          tabBarLabel: "Contacts",
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="contacts" size={24} color={color} />
+          ),
         }}
-      >
-        <Tabs.Screen
-          name="contact"
-          options={{
-            title: "Contacts",
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon color={color} focused={focused} name="Contacts" />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="ai"
-          options={{
-            title: "Ai",
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon color={color} focused={focused} name={"Naira"} />
-            ),
-          }}
-        />{" "}
-        <Tabs.Screen
-          name="reports"
-          options={{
-            title: "Reports",
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon color={color} focused={focused} name={"Reports"} />
-            ),
-          }}
-        />{" "}
-      </Tabs>
-    </>
+      />
+      <Tab.Screen
+        name="ai"
+        component={Ai}
+        options={{
+          tabBarLabel: "Ai",
+          tabBarIcon: ({ color }) => (
+            <MessageCircleHeart size={24} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="reports"
+        component={ReportsScreen}
+        options={{
+          tabBarLabel: "Reports",
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="form" size={24} color={color} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
-};
-
-export default TabLayout;
+}
