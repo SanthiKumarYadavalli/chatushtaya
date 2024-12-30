@@ -35,9 +35,9 @@ export default function ReportsScreen() {
       });
   }, []);
 
-  if (loading) {
-    return <LoadingScreen message="Wait a Moment..." />;
-  }
+  // if (loading) {
+  //   return <LoadingScreen message="Wait a Moment..." />;
+  // }
 
   if (error) {
     return (

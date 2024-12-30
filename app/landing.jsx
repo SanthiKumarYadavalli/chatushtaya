@@ -5,7 +5,6 @@ import { View, Text, StyleSheet, Button, ImageBackground ,TouchableOpacity} from
 import Swiper from "react-native-swiper";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-// import {index1} from "../constants/images"
 export default function Landing() {
   return (
     <>
