@@ -3,8 +3,6 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import AuthProvider from "../context/AuthProvider";
 import "./global.css";
-import ToastManager, { Toast } from "toastify-react-native";
-
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -37,25 +35,18 @@ export default function RootLayout() {
   }
   return (
     <AuthProvider>
-      <ToastManager
-        position="bottom"
-        width={180}
-        height={58}
-        showCloseIcon={false}
-        textStyle={{ fontSize: 12 }}
-        showProgressBar={false}
-      />
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="home" options={{ headerShown: false }} />
-        <Stack.Screen name="(form)" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="register" options={{ headerShown: false }} />
-        <Stack.Screen name="login" options={{ headerShown: false }} />
-        <Stack.Screen name="profile" options={{ headerShown: false }} />
-        <Stack.Screen name="landing" options={{ headerShown: false }} />
-        <Stack.Screen name="report/[id]" options={{ headerShown: false }} />
-      </Stack>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="home" options={{ headerShown: false }} />
+          <Stack.Screen name="(form)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="register" options={{ headerShown: false }} />
+          <Stack.Screen name="login" options={{ headerShown: false }} />
+          <Stack.Screen name="profile" options={{ headerShown: false }} />
+          <Stack.Screen name="accountSettings" options={{headerShown:false}} />
+          <Stack.Screen name="landing" options={{ headerShown: false }} />
+          <Stack.Screen name="report/[id]" options={{ headerShown: false }} />
+        </Stack>
     </AuthProvider>
   );
 }

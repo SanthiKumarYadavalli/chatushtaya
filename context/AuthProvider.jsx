@@ -5,25 +5,27 @@ const AuthContext = createContext({
   loading: false,
   isLogged: false,
   user: null,
+  isFirstTime:false,
+  setIsFirstTime: ()=>{},
   setUser: () => {},
   setIsLogged: () => {},
-  setLoading: () => [],
+  setLoading: () => {},
 });
 export const useAuthContext = () => useContext(AuthContext);
 
 export default function AuthProvider({ children }) {
   const [isLogged, setIsLogged] = useState(false);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [isFirstTime, setIsFirstTime] = useState(false);
 
   useEffect(() => {
     async function get() {
       try {
         const result = await getStoredUser();
-        // console.log("context: ", result);
         if (result) {
           setIsLogged(true);
-          setUser((prev) => result);
+          setUser(result);
         }
       } catch (err) {
         console.log("from context:", err);
@@ -40,6 +42,8 @@ export default function AuthProvider({ children }) {
         user,
         isLogged,
         loading,
+        isFirstTime,
+        setIsFirstTime,
         setUser,
         setIsLogged,
         setLoading,

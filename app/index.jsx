@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { useAuthContext } from "../context/AuthProvider";
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 
 import LoadingScreen from "./(form)/loading";
-
 const App = () => {
   const { user } = useAuthContext();
   const navigation = useNavigation();
@@ -14,7 +13,7 @@ const App = () => {
       navigation.reset({ index: 0, routes: [{ name: "home" }] });
     }
   }, [user, navigation]);
-  return <LoadingScreen />
+  return <LoadingScreen />;
 };
 
 export default App;

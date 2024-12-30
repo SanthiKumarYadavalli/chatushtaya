@@ -1,24 +1,26 @@
-// Function to fetch a single report by ID
-
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, View, Image } from "react-native";
+import { SafeAreaView, ScrollView, View, Image, Alert, Modal, TextInput, TouchableOpacity } from "react-native";
 import { Button, Card, Text, Divider } from "react-native-paper";
-
 import { router, useLocalSearchParams } from "expo-router";
-import {
-  deleteReport,
-  fetchSingleReport,
-  updateReport,
-} from "../../backend/utils";
+import { deleteReport, fetchSingleReport, updateReport } from "../../backend/utils";
 import LoadingScreen from "../(form)/loading";
 import { Toast } from "toastify-react-native";
+import { Ionicons } from '@expo/vector-icons';
+import { useAuthContext } from "../../context/AuthProvider";
 
 const SingleReport = () => {
   const { id } = useLocalSearchParams(); // Get the report ID from the route params
   const [report, setReport] = useState(null); // State for storing the report data
   const [loading, setLoading] = useState(true); // State for managing loading status
   const [canReport, setCanReport] = useState(0);
-  console.log(id);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [deleteReason, setDeleteReason] = useState("");
+
+  const { user } = useAuthContext();
+  if(!user) {
+    return <Login />;
+  }
+
   useEffect(() => {
     const fetchReport = async () => {
       try {
@@ -68,9 +70,20 @@ const SingleReport = () => {
   }
 
   const handleDelete = () => {
-    deleteReport(id);
-    router.replace("reports");
-    Toast.success("Report Deleted Successfully");
+    setModalVisible(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await deleteReport(id, deleteReason);
+      router.replace("reports");
+      Toast.success("Report Deleted Successfully");
+    } catch (error) {
+      console.error("Error deleting report:", error);
+      Toast.error("Failed to delete report");
+    } finally {
+      setModalVisible(false);
+    }
   };
 
   const handleSuperReport = () => {
@@ -94,6 +107,10 @@ const SingleReport = () => {
           paddingHorizontal: 16,
         }}
       >
+        <TouchableOpacity onPress={() => router.back()} style={{ position: 'absolute', top: 60, left: 16 }}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+
         {/* Header Section */}
         <View style={{ paddingVertical: 20 }}>
           <Text
@@ -142,8 +159,8 @@ const SingleReport = () => {
           {/* User Info */}
           <View style={{ marginBottom: 16 }}>
             <Text style={{ color: "#6c6c6c" }}>
-              <Text style={{ fontWeight: "600" }}>User ID: </Text>
-              {isAnonymous ? "Anonymous" : userId}
+              <Text style={{ fontWeight: "600" }}>User Name: </Text>
+              {isAnonymous ? "Anonymous" : user.username}
             </Text>
           </View>
 
@@ -168,8 +185,8 @@ const SingleReport = () => {
           {/*superReport */}
           <View style={{ marginBottom: 16 }}>
             <Text style={{ color: "#6c6c6c" }}>
-              <Text style={{ fontWeight: "600" }}>Super Report: </Text>
-              {isSuperReport ? "true" : "false"}
+              <Text style={{ fontWeight: "600" }}>Reported To: </Text>
+              {isSuperReport ? "Super - Admin" : "Admin"}
             </Text>
           </View>
 
@@ -236,7 +253,6 @@ const SingleReport = () => {
           </View>
         </Card>
 
-        {/* Divider */}
         <Divider style={{ width: "100%", marginVertical: 24 }} />
 
         {/* Action Buttons */}
@@ -244,8 +260,9 @@ const SingleReport = () => {
           {/* Delete Button */}
           <Button
             mode="contained"
-            style={{ marginBottom: 12, backgroundColor: "#E53935" }}
+            style={{ marginBottom: 12, backgroundColor: status!=='resolved' ? "#E53935" :"gray" }}
             onPress={handleDelete}
+            disabled={status === "resolved"}
           >
             Delete
           </Button>
@@ -255,15 +272,52 @@ const SingleReport = () => {
             mode="contained"
             style={{
               marginBottom: 12,
-              backgroundColor: canReport && !isSuperReport ? "#FFB300" : "gray",
+              backgroundColor: canReport && !isSuperReport && status!=='resolved' ? "#FFB300" : "gray",
             }}
             onPress={handleSuperReport}
-            disabled={isSuperReport || !canReport} // Disable if time difference is less than 7 days
+            disabled={isSuperReport || !canReport || status === "resolved"} // Disable if time difference is less than 7 days or report is resolved
           >
             Report to SuperAdmin
           </Button>
         </View>
       </ScrollView>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" }}>
+          <View style={{ width: "80%", backgroundColor: "white", padding: 20, borderRadius: 10 }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>Confirm Delete</Text>
+            <TextInput
+              placeholder="Reason for deleting"
+              value={deleteReason}
+              onChangeText={setDeleteReason}
+              style={{ borderColor: "gray", borderWidth: 1, padding: 10, borderRadius: 5, marginBottom: 20 }}
+            />
+            <Button
+              mode="contained"
+              onPress={confirmDelete}
+              disabled={!deleteReason}
+              style={{
+                backgroundColor: deleteReason ? "#E53935" : "gray",
+                transition: "background-color 0.3s ease",
+              }}
+              labelStyle={{
+                color: deleteReason ? "white" : "black",
+              }}
+            >
+              Confirm
+            </Button>
+            <Button mode="text" onPress={() => setModalVisible(false)} style={{ marginTop: 10 }}>
+              Cancel
+            </Button>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };

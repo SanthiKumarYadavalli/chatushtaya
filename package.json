@@ -74,6 +74,7 @@
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
     "react-router-dom": "^7.0.2",
+    "rn-tourguide": "^3.3.2",
     "tailwindcss": "^3.4.16",
     "toastify-react-native": "^5.0.3",
     "twrnc": "^4.6.0",
