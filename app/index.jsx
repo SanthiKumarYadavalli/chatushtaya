@@ -3,7 +3,6 @@ import { useAuthContext } from "../context/AuthProvider";
 import { router, useNavigation } from "expo-router";
 
 import LoadingScreen from "./(form)/loading";
-
 const App = () => {
   const { user } = useAuthContext();
   const navigation = useNavigation();

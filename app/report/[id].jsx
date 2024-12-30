@@ -107,7 +107,6 @@ const SingleReport = () => {
           paddingHorizontal: 16,
         }}
       >
-        {/* Back Navigation Arrow */}
         <TouchableOpacity onPress={() => router.back()} style={{ position: 'absolute', top: 60, left: 16 }}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>

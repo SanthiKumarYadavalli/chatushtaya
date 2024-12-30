@@ -16,7 +16,7 @@ import {
   where,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid"; // Install: npm install uuid
-import { firestore, storage } from "./firebase";
+import { firestore } from "./firebase"; // Ensure firestore is properly initialized in firebase.js
 import * as FileSystem from "expo-file-system";
 import { getSeverity } from "../utils/get-severity";
 
@@ -25,8 +25,9 @@ const auth = getAuth();
 export const userReportCounts = async (id) => {
   const reports = await fetchReportsByUserId(id);
   const reportedIncidents = reports.length;
-  const anonymousReports = reports.filter((report) => report.anonymous).length;
-  return { reportedIncidents, anonymousReports };
+  const anonymousReports = [...reports].filter((report) => report.isAnonymous).length;
+  const deletedReports = [...reports].filter((report)=> report.status == 'deleted').length;
+  return { reportedIncidents, anonymousReports, deletedReports };
 };
 
 export const loginUser = async (data) => {
@@ -47,7 +48,7 @@ export const loginUser = async (data) => {
     }
 
     const userDoc = querySnapshot.docs[0];
-    const userData = { id: userDoc.id, ...userDoc.data() };
+    const userData = { id: userDoc.id, ...userDoc.data()};
 
     // Store user data locally
     await AsyncStorage.setItem("user", JSON.stringify(userData));
@@ -77,12 +78,19 @@ export const registerUser = async (data) => {
 export const getStoredUser = async () => {
   try {
     const user = await AsyncStorage.getItem("user");
-    // console.log("getstore", user);
     return user ? JSON.parse(user) : null;
   } catch (error) {
     throw error;
   }
 };
+
+export const setStoredUser = async(user) =>{
+  try{
+    await AsyncStorage.setItem("user", JSON.stringify(user));
+  }catch(error){
+    throw error;
+  }
+}
 
 export const logoutUser = async () => {
   try {
@@ -295,10 +303,19 @@ export const getMemberById = async (memberId) => {
   }
 };
 
-export const updateMember = async (memberId, updatedData) => {
+export const updateMember = async (email, updatedData) => {
   try {
-    const memberRef = doc(firestore, "members", memberId);
-    await updateDoc(memberRef, updatedData);
+    const memberRef = collection(firestore, "members");
+    const q = query(memberRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      throw new Error("Member not found");
+    }
+
+    const memberDoc = querySnapshot.docs[0];
+    const memberRefDoc = doc(firestore, "members", memberDoc.id);
+    await updateDoc(memberRefDoc, updatedData);
     console.log("Member updated successfully!");
   } catch (error) {
     console.error("Error updating member:", error);

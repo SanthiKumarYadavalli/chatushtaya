@@ -27,9 +27,9 @@ const SignIn = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  // if (loading) {
-  //   return <LoadingScreen message="Wait a Moment..." />;
-  // }
+  if (loading) {
+    return <LoadingScreen message="Wait a Moment..." />;
+  }
 
   const submit = async () => {
     setLoading(true);

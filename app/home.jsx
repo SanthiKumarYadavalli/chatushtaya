@@ -13,9 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuthContext } from "../context/AuthProvider";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Login from "./login";
-import { Toast } from "toastify-react-native";
 import { Feather, HandHeart, PhoneCall } from "lucide-react-native";
-
 const Home = () => {
   const navigation = useNavigation();
   const dialEmergency = () => {

@@ -7,10 +7,12 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons"; // Install: expo install @expo/vector-icons
+import { FontAwesome5, Ionicons } from "@expo/vector-icons"; // Install: expo install @expo/vector-icons
 import { logoutUser, userReportCounts } from "../backend/utils";
 import { router } from "expo-router";
 import { useAuthContext } from "../context/AuthProvider";
+import AccountSettings from "./accountSettings";
+
 export default function profile() {
   const { setUser, setIsLogged, user } = useAuthContext();
   const [reportCnt, setReportCnt] = useState({});
@@ -19,10 +21,10 @@ export default function profile() {
   useEffect(() => {
     async function fetchReportCounts() {
       try {
-        const { reportedIncidents, anonymousReports } = await userReportCounts(
+        const { reportedIncidents, anonymousReports, deletedReports } = await userReportCounts(
           user.id
         );
-        setReportCnt({ reportedIncidents, anonymousReports });
+        setReportCnt({ reportedIncidents, anonymousReports, deletedReports });
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -45,6 +47,9 @@ export default function profile() {
   return (
     <SafeAreaView className="h-full">
       <ScrollView>
+        <TouchableOpacity onPress={() => router.back()} style={{ position: 'absolute', top: 62, left: 20 }}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
         {/* Profile Header */}
         <View className="w-full flex justify-center items-center h-full px-4 my-6">
           <View className="items-center mb-6 mt-12">
@@ -62,15 +67,20 @@ export default function profile() {
             ) : (
               <>
                 <Text className=" mb-1 font-pextralight">
-                  {reportCnt.reportedIncidents} Reports Filed
+                  {reportCnt.reportedIncidents ? reportCnt.reportedIncidents : 0} Reports Filed
                 </Text>
                 <Text className=" mb-1 font-pextralight">
-                  {reportCnt.anonymousReports} Anonymous Reports
+                  {reportCnt.anonymousReports ? reportCnt.anonymousReports : 0} Anonymous Reports
+                </Text>
+                <Text className=" mb-1 font-pextralight">
+                  {reportCnt.deletedReports ? reportCnt.deletedReports : 0} Reports Deleted
                 </Text>
               </>
             )}
 
             <Text className="font-pregular">{user.email}</Text>
+            <Text className="font-pregular">{user.phoneNumber}</Text>
+
           </View>
 
           {/* Reported Incidents */}
@@ -94,7 +104,7 @@ export default function profile() {
           <View className="mb-6 w-full">
             <Text className="text-lg font-pregular mb-2">Settings</Text>
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => { router.push("/accountSettings") }}
               className="flex-row items-center bg-white p-4 rounded-lg shadow-md mb-4"
             >
               <FontAwesome5 name="cogs" size={20} color="gray" />
