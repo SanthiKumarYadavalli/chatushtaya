@@ -45,7 +45,7 @@ export default function ChatScreen() {
             {/* Header */}
             <View style={styles.header}>
               <Image
-                source={require("../assets/icons/robot.png")}
+                source={require("../assets/icons/robot.jpg")}
                 style={styles.icon}
               />
               <Text className="text-3xl font-pregular ">Naira</Text>
@@ -54,7 +54,7 @@ export default function ChatScreen() {
             {/* Content */}
             {listData.length === 0 ? (
               <View className="justify-center items-center w-full h-[80%]">
-                <Text className="text-center text-lg font-pregular">Hi 👋</Text>
+                <Text className="text-center text-lg font-pregular">Hi 👋, I'm Naira !</Text>
                 <Text className="text-center text-lg font-pregular">
                   How are you feeling today?
                 </Text>

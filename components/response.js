@@ -62,7 +62,7 @@ export default function Response(props) {
       >
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
           <Image
-            source={require("../assets/icons/robot.png")}
+            source={require("../assets/icons/robot.jpg")}
             style={styles.icon}
           />
           <Text style={{ fontWeight: 600 }} className="font-pregular">

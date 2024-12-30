@@ -1,19 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useAuthContext } from "../context/AuthProvider";
-import { router, useNavigation } from "expo-router";
+import { Redirect } from "expo-router";
+import Landing from "./landing"
 
-import LoadingScreen from "./(form)/loading";
 const App = () => {
   const { user } = useAuthContext();
-  const navigation = useNavigation();
-  useEffect(() => {
-    if (!user) {
-      navigation.reset({ index: 0, routes: [{ name: "landing" }] });
-    } else {
-      navigation.reset({ index: 0, routes: [{ name: "home" }] });
-    }
-  }, [user, navigation]);
-  return <LoadingScreen />;
+  if (user) {
+    return <Redirect href="home" />
+  }
+  return <Landing />
 };
 
 export default App;
+

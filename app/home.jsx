@@ -68,10 +68,10 @@ const Home = () => {
               {/* Report Button (Left) */}
               <View className="absolute left-3 top-5 items-center gap-2">
                 <View className="bg-white rounded-full overflow-hidden justify-center items-center shadow-2xl border border-[#f72c5ba6]">
-                  <Pressable 
+                  <Pressable
                     android_ripple={{ color: "#eee"}}
                     className="w-32 h-32 rounded-full items-center justify-center"
-                    onPress={() => navigation.navigate("(tabs)")}
+                    onPress={() => navigation.push("(tabs)")}
                   >
                     {/* <Image
                       source={require("../assets/images/help.jpg")} // Replace with your image
@@ -88,7 +88,6 @@ const Home = () => {
 
               {/* Help Button (Right) */}
               <View className="absolute right-3 bottom-10 items-center py-5 gap-2">
-                {/* <Link href="/(form)/type" asChild> */}
                   <View className="bg-white rounded-full justify-center overflow-hidden items-center shadow-2xl border border-[#1766e4]">
                     <Pressable
                       android_ripple={{color: "#eee"}}
@@ -98,7 +97,6 @@ const Home = () => {
                       <Feather color="#1766e4" size={50} strokeWidth={1}/>
                     </Pressable>
                   </View>
-                {/* </Link> */}
                 <Text className="text-lg font-pregular text-gray-800">
                   Report
                 </Text>
