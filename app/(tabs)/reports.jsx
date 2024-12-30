@@ -6,7 +6,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { fetchReportsByUserId } from "../../backend/utils"; // Adjust the path as necessary
+import { fetchReportsByUserId } from "../../backend/utils";
 import { useAuthContext } from "../../context/AuthProvider";
 import LoadingScreen from "../(form)/loading";
 import { router } from "expo-router";
@@ -25,7 +25,8 @@ export default function ReportsScreen() {
   useEffect(() => {
     fetchReportsByUserId(user.id)
       .then((data) => {
-        setReports(data);
+        const filteredReports = data.filter((report) => report.status !== "deleted");
+        setReports(filteredReports);
         setLoading(false);
       })
       .catch((err) => {

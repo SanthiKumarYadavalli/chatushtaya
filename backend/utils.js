@@ -68,8 +68,7 @@ export const registerUser = async (data) => {
       email,
       password
     );
-    const user = userCredential.user;
-    return user;
+    return userCredential.user;
   } catch (error) {
     throw error;
   }
@@ -262,11 +261,10 @@ export const updateReport = async (reportId, updatedData) => {
   }
 };
 
-export const deleteReport = async (reportId) => {
+export const deleteReport = async (reportId, deleteReason) => {
   try {
     const reportRef = doc(firestore, "reports", reportId);
-    await deleteDoc(reportRef);
-    console.log("Report deleted successfully!");
+    await updateReport(reportId, { status: "deleted", deleteReason:deleteReason });
   } catch (error) {
     console.error("Error deleting report:", error);
     throw error;
@@ -278,10 +276,9 @@ export const registerMember = async (data) => {
     const user = await registerUser(data);
     const membersCollection = collection(firestore, "members");
     await addDoc(membersCollection, { ...data, id: user.uid });
-    // await sendWelcomeEmail(data.email, data.username);
     console.log("Member added successfully!", user);
+    
   } catch (error) {
-    // console.error("Error adding member:", error);
     throw error;
   }
 };
