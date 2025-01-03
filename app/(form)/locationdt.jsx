@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { router } from "expo-router";
 import { Text, View, TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-paper";
@@ -10,6 +10,11 @@ export default function LocationDt() {
   const { formData, changeValue } = useReportContext();
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+
+  useEffect(() => {
+    changeValue("date", new Date());
+    changeValue("time", new Date());
+  }, []);
 
   const onTimeChange = (event, selectedTime) => {
     const currentTime = selectedTime || time;

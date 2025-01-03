@@ -14,9 +14,11 @@ import { useAuthContext } from "../context/AuthProvider";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Login from "./login";
 import { Feather, HandHeart, PhoneCall } from "lucide-react-native";
+import { sendLocation } from "../utils/notifications";
 const Home = () => {
   const navigation = useNavigation();
-  const dialEmergency = () => {
+  const dialEmergency = async () => {
+    await sendLocation();
     Linking.openURL("tel:100");
   };
   const { user } = useAuthContext();

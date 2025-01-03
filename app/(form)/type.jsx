@@ -19,6 +19,7 @@ export default function ChooseTypeScreen() {
     "Cyber harassment",
     "Discrimination",
     "Abuse of Authority by Staff or Faculty",
+    "Other"
   ];
   const toggleTypes = (type) => {
     if (formData.types.includes(type)) {
